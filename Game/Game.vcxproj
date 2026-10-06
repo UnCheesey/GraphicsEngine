@@ -24,6 +24,7 @@
     <ProjectGuid>{a739e3cd-242b-4ad4-801e-0dc86f2300d6}</ProjectGuid>
     <RootNamespace>Game</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>Graphics</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -173,25 +174,7 @@
     <None Include="cpp.hint" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="FinalGame\FinalGame.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="SpaceGame\Bullet.cpp" />
-    <ClCompile Include="SpaceGame\Enemy.cpp" />
-    <ClCompile Include="SpaceGame\Pellet.cpp" />
-    <ClCompile Include="SpaceGame\Pickup.cpp" />
-    <ClCompile Include="SpaceGame\Player.cpp" />
-    <ClCompile Include="SpaceGame\Rocket.cpp" />
-    <ClCompile Include="SpaceGame\SpaceGame.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="FinalGame\FinalGame.h" />
-    <ClInclude Include="SpaceGame\Bullet.h" />
-    <ClInclude Include="SpaceGame\Enemy.h" />
-    <ClInclude Include="SpaceGame\Pellet.h" />
-    <ClInclude Include="SpaceGame\Pickup.h" />
-    <ClInclude Include="SpaceGame\Player.h" />
-    <ClInclude Include="SpaceGame\Rocket.h" />
-    <ClInclude Include="SpaceGame\SpaceGame.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
