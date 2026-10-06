@@ -10,13 +10,6 @@ int main() {
     // SET DIRECTORY
     fe::SetWorkingDirectory("Assets");
 
-            
-    
-        
-    // SPACE GAME INITIALIZATION
-    SpaceGame game;
-    game.Initialize();
-
     Engine::Get().Initialize();
 
     // MAIN LOOP
@@ -39,20 +32,6 @@ int main() {
         Engine::Get().Update();
         float dt = Engine::Get().GetTime().GetDeltaTime();
         Engine::Get().GetRenderer().BeginFrame();
-        
-        // DRAW SCENE
-        game.Draw(Engine::Get().GetRenderer());
-        
-        // DRAW SCENE
-        game.Draw(Engine::Get().GetRenderer());
-        
-        // DRAW SCENE
-        game.Draw(Engine::Get().GetRenderer());
-        
-        Engine::Get().GetRenderer().Clear();
-
-        // DRAW SCENE
-        game.Draw(Engine::Get().GetRenderer());
         
         // PRESENT
         Engine::Get().GetRenderer().EndFrame();
