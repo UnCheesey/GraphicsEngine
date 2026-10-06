@@ -1,0 +1,213 @@
+{
+  "actors": [
+    {
+      "type": "Actor",
+      "prototype": false,
+      "name": "Tilemap",
+      "tag": "Ground",
+      "active": true,
+      "persistent": true,
+      "transform": {
+        "position": [ 0, 0 ],
+        "rotation": 0,
+        "scale": 3
+      },
+      "components": [
+        {
+          "type": "TilemapRendererComponent",
+          "tilemap_name": "Tilemaps/world.json"
+        }
+      ]
+    },
+    {
+      "type": "Actor",
+      "prototype": false,
+      "name": "Bat",
+      "tag":  "Enemy",
+      "active": true,
+      "persistent": true,
+      "transform": {
+        "position": [ 200, 200 ],
+        "rotation": 0,
+        "scale": 3
+      },
+      "components": [
+        {
+          "type": "SpriteAnimationRendererComponent",
+          "texture_frames": "Animations/ghost_idle.json",
+          "fps": 10,
+          "loop": true
+        }
+      ]
+    },
+    {
+      "type": "Player",
+      "prototype": true,
+      "name": "PlayerPrototype",
+      "tag": "Player",
+      "active": true,
+      "speed": 800.0,
+      "damping": 3.0,
+      "transform": {
+        "position": [ 640.0, 512.0 ],
+        "rotation": -90,
+        "scale": 1
+      },
+      "components": [
+        {
+          "type": "SpriteRendererComponent",
+          "texture": "Textures/player.png"
+        },
+        {
+          "type": "Box2DPhysicsComponent",
+          "linear_damping": 2.0,
+          "angular_damping": 5.0,
+          "size": [ 48, 48 ],
+          "gravity_scale": 0
+        }
+      ]
+    },
+    {
+      "type": "Enemy",
+      "prototype": true,
+      "name": "EnemyPrototype",
+      "tag": "Enemy",
+      "active": true,
+      "speed": 800.0,
+      "points": 100,
+      "health": 1,
+      "damping": 3.0,
+      "transform": {
+        "position": [ 640.0, 512.0 ],
+        "rotation": -90,
+        "scale": 1
+      },
+      "components": [
+        {
+          "type": "SpriteRendererComponent",
+          "texture": "Textures/enemy.png"
+        },
+        {
+          "type": "Box2DPhysicsComponent",
+          "linear_damping": 2.0,
+          "angular_damping": 2.0,
+          "size": [ 48, 48 ],
+          "gravity_scale": 0
+        }
+      ]
+    },
+    {
+      "type": "Bullet",
+      "prototype": true,
+      "name": "BulletPrototype",
+      "tag": "Bullet",
+      "active": true,
+      "lifespan": 1.0,
+      "speed": 1500.0,
+      "damping": 3.0,
+      "transform": {
+        "position": [ 0.0, 0.0 ],
+        "rotation": 0,
+        "scale": 2.0
+      },
+      "components": [
+        {
+          "type": "SpriteRendererComponent",
+          "texture": "Textures/projectile01.png"
+        },
+        {
+          "type": "Box2DPhysicsComponent",
+          "linear_damping": 2.0,
+          "angular_damping": 2.0,
+          "size": [ 48, 48 ],
+          "gravity_scale": 0,
+          "is_sensor": true
+        }
+      ]
+    },
+    {
+      "type": "Rocket",
+      "prototype": true,
+      "name": "RocketPrototype",
+      "tag": "Rocket",
+      "active": true,
+      "lifespan": 0.8,
+      "speed": 500.0,
+      "pelletamount": 5,
+      "damping": 3.0,
+      "transform": {
+        "position": [ 0.0, 0.0 ],
+        "rotation": 0,
+        "scale": 3.0
+      },
+      "components": [
+        {
+          "type": "SpriteRendererComponent",
+          "texture": "Textures/missile.png"
+        },
+        {
+          "type": "Box2DPhysicsComponent",
+          "linear_damping": 2.0,
+          "angular_damping": 2.0,
+          "size": [ 48, 48 ],
+          "gravity_scale": 0,
+          "is_sensor": true
+        }
+      ]
+    },
+    {
+      "type": "Pellet",
+      "prototype": true,
+      "name": "PelletPrototype",
+      "tag": "Bullet",
+      "active": true,
+      "lifespan": 1.0,
+      "speed": 1000.0,
+      "damping": 3.0,
+      "transform": {
+        "position": [ 0.0, 0.0 ],
+        "rotation": 0,
+        "scale": 2.0
+      },
+      "components": [
+        {
+          "type": "SpriteRendererComponent",
+          "texture": "Textures/projectile02.png"
+        },
+        {
+          "type": "Box2DPhysicsComponent",
+          "linear_damping": 2.0,
+          "angular_damping": 2.0,
+          "size": [ 48, 48 ],
+          "gravity_scale": 0,
+          "is_sensor": true
+        }
+      ]
+    },
+    {
+      "type": "Pickup",
+      "prototype": true,
+      "name": "PickupPrototype",
+      "tag": "Pickup",
+      "active": true,
+      "lifespan": 5.5,
+      "transform": {
+        "position": [ 640.0, 512.0 ],
+        "rotation": 0,
+        "scale": 0.1
+      },
+      "components": [
+        {
+          "type": "SpriteRendererComponent",
+          "texture": "Textures/pickup.png"
+        },
+        {
+          "type": "Box2DPhysicsComponent",
+          "size": [ 1000, 1000 ],
+          "gravity_scale": 0,
+          "is_sensor": true
+        }
+      ]
+    }
+  ]
+}

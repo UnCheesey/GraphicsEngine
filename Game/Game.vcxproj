@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>17.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{a739e3cd-242b-4ad4-801e-0dc86f2300d6}</ProjectGuid>
+    <RootNamespace>Game</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(SolutionDir)Binaries\$(Platform)\$(Configuration)\$(ProjectName)\</OutDir>
+    <IntDir>$(SolutionDir)Intermediate\$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(SolutionDir)Binaries\$(Platform)\$(Configuration)\$(ProjectName)\</OutDir>
+    <IntDir>$(SolutionDir)Intermediate\$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>$(SolutionDir)Binaries\$(Platform)\$(Configuration)\$(ProjectName)\</OutDir>
+    <IntDir>$(SolutionDir)Intermediate\$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(SolutionDir)Binaries\$(Platform)\$(Configuration)\$(ProjectName)\</OutDir>
+    <IntDir>$(SolutionDir)Intermediate\$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir)ThirdParty\box2d\include;$(SolutionDir)ThirdParty\rapidjson\include;$(SolutionDir)ThirdParty\fmod\core\inc;</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>$(CoreLibraryDependencies);%(AdditionalDependencies);sdl3.lib;sdl3_ttf.lib;sdl3_image.lib;box2dd.lib</AdditionalDependencies>
+      <AdditionalOptions>/WHOLEARCHIVE:Engine.lib %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalLibraryDirectories>$(SolutionDir)ThirdParty\box2d\lib;</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir)ThirdParty\box2d\include;$(SolutionDir)ThirdParty\rapidjson\include;$(SolutionDir)ThirdParty\fmod\core\inc;</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>$(CoreLibraryDependencies);%(AdditionalDependencies);sdl3.lib;sdl3_ttf.lib;sdl3_image.lib;box2dd.lib</AdditionalDependencies>
+      <AdditionalOptions>/WHOLEARCHIVE:Engine.lib %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalLibraryDirectories>$(SolutionDir)ThirdParty\box2d\lib;</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir)ThirdParty\box2d\include;$(SolutionDir)ThirdParty\rapidjson\include;$(SolutionDir)ThirdParty\fmod\core\inc;$(SolutionDir)Engine;$(SolutionDir)ThirdParty\SDL3\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(SolutionDir)ThirdParty\box2d\lib;$(SolutionDir)ThirdParty\SDL3\lib\$(PlatformTarget);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>%(AdditionalDependencies);sdl3.lib;sdl3_ttf.lib;sdl3_image.lib;box2dd.lib</AdditionalDependencies>
+      <AdditionalOptions>/WHOLEARCHIVE:Engine.lib %(AdditionalOptions)</AdditionalOptions>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir)ThirdParty\box2d\include;$(SolutionDir)ThirdParty\rapidjson\include;$(SolutionDir)ThirdParty\fmod\core\inc;</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>$(CoreLibraryDependencies);%(AdditionalDependencies);sdl3.lib;sdl3_ttf.lib;sdl3_image.lib;box2dd.lib</AdditionalDependencies>
+      <AdditionalOptions>/WHOLEARCHIVE:Engine.lib %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalLibraryDirectories>$(SolutionDir)ThirdParty\box2d\lib;</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Engine\Engine.vcxproj">
+      <Project>{85d6bb96-2850-4263-8add-b7d752db02a1}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Build\Assets\FinalGame\Animations\ghost_idle.json" />
+    <None Include="..\Build\Assets\FinalGame\Scenes\scene.json" />
+    <None Include="..\Build\Assets\FinalGame\Tilemaps\world.json" />
+    <None Include="..\Build\Assets\SpaceGame\Animations\ghost_idle.json" />
+    <None Include="..\Build\Assets\SpaceGame\Animations\goblin_idle.json" />
+    <None Include="..\Build\Assets\SpaceGame\Animations\goblin_run.json" />
+    <None Include="..\Build\Assets\SpaceGame\Scenes\scene.json" />
+    <None Include="..\Build\Assets\SpaceGame\Tilemaps\world.json" />
+    <None Include="cpp.hint" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="FinalGame\FinalGame.cpp" />
+    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="SpaceGame\Bullet.cpp" />
+    <ClCompile Include="SpaceGame\Enemy.cpp" />
+    <ClCompile Include="SpaceGame\Pellet.cpp" />
+    <ClCompile Include="SpaceGame\Pickup.cpp" />
+    <ClCompile Include="SpaceGame\Player.cpp" />
+    <ClCompile Include="SpaceGame\Rocket.cpp" />
+    <ClCompile Include="SpaceGame\SpaceGame.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="FinalGame\FinalGame.h" />
+    <ClInclude Include="SpaceGame\Bullet.h" />
+    <ClInclude Include="SpaceGame\Enemy.h" />
+    <ClInclude Include="SpaceGame\Pellet.h" />
+    <ClInclude Include="SpaceGame\Pickup.h" />
+    <ClInclude Include="SpaceGame\Player.h" />
+    <ClInclude Include="SpaceGame\Rocket.h" />
+    <ClInclude Include="SpaceGame\SpaceGame.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

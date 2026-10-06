@@ -1,0 +1,118 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Assets">
+      <UniqueIdentifier>{7996c22d-74c0-4002-a1cd-a87568519f01}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SpaceGame">
+      <UniqueIdentifier>{438f1876-9c83-465e-9312-5463c42c2844}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FinalGame">
+      <UniqueIdentifier>{aeadcd04-ddf8-4ac9-a902-05e64f018d83}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Assets\FinalGame">
+      <UniqueIdentifier>{d4b9dc3a-60e9-4172-9d07-83992741b467}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Assets\FinalGame\Tilemaps">
+      <UniqueIdentifier>{54489daa-4802-4e74-adbd-b065604007ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Assets\FinalGame\Scenes">
+      <UniqueIdentifier>{631aa6ee-0dee-4a62-927e-c9d235fbd022}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Assets\FinalGame\Animations">
+      <UniqueIdentifier>{805b8294-74b8-42a2-b653-20d72005af71}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Assets\SpaceGame">
+      <UniqueIdentifier>{27d5a0bd-386f-4d6f-9183-aea07dc56197}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Assets\SpaceGame\Animations">
+      <UniqueIdentifier>{bec63d63-c292-4444-91ec-ff778e0c2bc6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Assets\SpaceGame\Scenes">
+      <UniqueIdentifier>{730c93f5-bfdb-4ec8-92aa-b3407a5e7e59}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Assets\SpaceGame\Tilemaps">
+      <UniqueIdentifier>{74cde6ac-5f1b-4da6-94cc-7a14b661b901}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="cpp.hint" />
+    <None Include="..\Build\Assets\FinalGame\Animations\ghost_idle.json">
+      <Filter>Assets\FinalGame\Animations</Filter>
+    </None>
+    <None Include="..\Build\Assets\FinalGame\Scenes\scene.json">
+      <Filter>Assets\FinalGame\Scenes</Filter>
+    </None>
+    <None Include="..\Build\Assets\FinalGame\Tilemaps\world.json">
+      <Filter>Assets\FinalGame\Tilemaps</Filter>
+    </None>
+    <None Include="..\Build\Assets\SpaceGame\Animations\ghost_idle.json">
+      <Filter>Assets\SpaceGame\Animations</Filter>
+    </None>
+    <None Include="..\Build\Assets\SpaceGame\Scenes\scene.json">
+      <Filter>Assets\SpaceGame\Scenes</Filter>
+    </None>
+    <None Include="..\Build\Assets\SpaceGame\Tilemaps\world.json">
+      <Filter>Assets\SpaceGame\Tilemaps</Filter>
+    </None>
+    <None Include="..\Build\Assets\SpaceGame\Animations\goblin_idle.json">
+      <Filter>Assets\SpaceGame\Animations</Filter>
+    </None>
+    <None Include="..\Build\Assets\SpaceGame\Animations\goblin_run.json">
+      <Filter>Assets\SpaceGame\Animations</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="SpaceGame\SpaceGame.cpp">
+      <Filter>SpaceGame</Filter>
+    </ClCompile>
+    <ClCompile Include="SpaceGame\Bullet.cpp">
+      <Filter>SpaceGame</Filter>
+    </ClCompile>
+    <ClCompile Include="SpaceGame\Enemy.cpp">
+      <Filter>SpaceGame</Filter>
+    </ClCompile>
+    <ClCompile Include="SpaceGame\Pellet.cpp">
+      <Filter>SpaceGame</Filter>
+    </ClCompile>
+    <ClCompile Include="SpaceGame\Pickup.cpp">
+      <Filter>SpaceGame</Filter>
+    </ClCompile>
+    <ClCompile Include="SpaceGame\Player.cpp">
+      <Filter>SpaceGame</Filter>
+    </ClCompile>
+    <ClCompile Include="SpaceGame\Rocket.cpp">
+      <Filter>SpaceGame</Filter>
+    </ClCompile>
+    <ClCompile Include="FinalGame\FinalGame.cpp">
+      <Filter>FinalGame</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="SpaceGame\SpaceGame.h">
+      <Filter>SpaceGame</Filter>
+    </ClInclude>
+    <ClInclude Include="SpaceGame\Bullet.h">
+      <Filter>SpaceGame</Filter>
+    </ClInclude>
+    <ClInclude Include="SpaceGame\Enemy.h">
+      <Filter>SpaceGame</Filter>
+    </ClInclude>
+    <ClInclude Include="SpaceGame\Pellet.h">
+      <Filter>SpaceGame</Filter>
+    </ClInclude>
+    <ClInclude Include="SpaceGame\Pickup.h">
+      <Filter>SpaceGame</Filter>
+    </ClInclude>
+    <ClInclude Include="SpaceGame\Player.h">
+      <Filter>SpaceGame</Filter>
+    </ClInclude>
+    <ClInclude Include="SpaceGame\Rocket.h">
+      <Filter>SpaceGame</Filter>
+    </ClInclude>
+    <ClInclude Include="FinalGame\FinalGame.h">
+      <Filter>FinalGame</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

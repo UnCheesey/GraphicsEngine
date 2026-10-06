@@ -1,0 +1,20 @@
+Game Engine Sample
+
+
+Input - 
+	Mouse Button -
+		if (Engine::Get().GetInput().GetButtonDown(nu::Input::MouseButton::Right)) {
+       	 	//	Add Action
+		}
+
+	Keyboard -
+		if (Engine::Get().GetInput().GetKeyPressed(SDL_SCANCODE_1)) {
+    		//	Add Action
+		}
+
+Audio -
+std::vector<FMOD::Sound*> sounds;
+FMOD::Sound* sound = nullptr;
+
+Engine::Get().GetAudio().AddSound("snare", "Sounds/snare.wav");
+Engine::Get().GetAudio().PlaySound("snare");

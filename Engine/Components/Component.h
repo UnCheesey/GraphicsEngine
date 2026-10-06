@@ -1,0 +1,25 @@
+#pragma once
+#include "Core/Factory.h"
+#include "Framework/Object.h"
+#include "Serialization/Json.h"
+
+namespace nu {
+	class Actor;
+
+	class Component : public Object {
+	public:
+		Component() = default;
+		virtual ~Component() = default;
+
+		virtual void Start() {}
+		virtual void Destroy() {}
+
+		virtual void Update(float dt) {}
+
+		Actor* GetOwner() const { return m_owner; }
+		void SetOwner(Actor* owner) { m_owner = owner; }
+
+	protected:
+		Actor* m_owner = nullptr;
+	};
+}
