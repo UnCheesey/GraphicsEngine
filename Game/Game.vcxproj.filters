@@ -4,12 +4,6 @@
     <Filter Include="Assets">
       <UniqueIdentifier>{7996c22d-74c0-4002-a1cd-a87568519f01}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SpaceGame">
-      <UniqueIdentifier>{438f1876-9c83-465e-9312-5463c42c2844}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="FinalGame">
-      <UniqueIdentifier>{aeadcd04-ddf8-4ac9-a902-05e64f018d83}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Assets\FinalGame">
       <UniqueIdentifier>{d4b9dc3a-60e9-4172-9d07-83992741b467}</UniqueIdentifier>
     </Filter>
@@ -64,55 +58,5 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="SpaceGame\SpaceGame.cpp">
-      <Filter>SpaceGame</Filter>
-    </ClCompile>
-    <ClCompile Include="SpaceGame\Bullet.cpp">
-      <Filter>SpaceGame</Filter>
-    </ClCompile>
-    <ClCompile Include="SpaceGame\Enemy.cpp">
-      <Filter>SpaceGame</Filter>
-    </ClCompile>
-    <ClCompile Include="SpaceGame\Pellet.cpp">
-      <Filter>SpaceGame</Filter>
-    </ClCompile>
-    <ClCompile Include="SpaceGame\Pickup.cpp">
-      <Filter>SpaceGame</Filter>
-    </ClCompile>
-    <ClCompile Include="SpaceGame\Player.cpp">
-      <Filter>SpaceGame</Filter>
-    </ClCompile>
-    <ClCompile Include="SpaceGame\Rocket.cpp">
-      <Filter>SpaceGame</Filter>
-    </ClCompile>
-    <ClCompile Include="FinalGame\FinalGame.cpp">
-      <Filter>FinalGame</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="SpaceGame\SpaceGame.h">
-      <Filter>SpaceGame</Filter>
-    </ClInclude>
-    <ClInclude Include="SpaceGame\Bullet.h">
-      <Filter>SpaceGame</Filter>
-    </ClInclude>
-    <ClInclude Include="SpaceGame\Enemy.h">
-      <Filter>SpaceGame</Filter>
-    </ClInclude>
-    <ClInclude Include="SpaceGame\Pellet.h">
-      <Filter>SpaceGame</Filter>
-    </ClInclude>
-    <ClInclude Include="SpaceGame\Pickup.h">
-      <Filter>SpaceGame</Filter>
-    </ClInclude>
-    <ClInclude Include="SpaceGame\Player.h">
-      <Filter>SpaceGame</Filter>
-    </ClInclude>
-    <ClInclude Include="SpaceGame\Rocket.h">
-      <Filter>SpaceGame</Filter>
-    </ClInclude>
-    <ClInclude Include="FinalGame\FinalGame.h">
-      <Filter>FinalGame</Filter>
-    </ClInclude>
   </ItemGroup>
 </Project>

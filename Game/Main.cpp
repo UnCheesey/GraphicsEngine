@@ -1,11 +1,6 @@
-// Files use namespace fe::
-
 #include "Engine.h"
-#include "SpaceGame/SpaceGame.h"
-#include "FinalGame/FinalGame.h"
-#include <iostream>
-#include <vector>
-#include <map>
+#include "Core/File.h"
+// Files use namespace fe::
 
 using namespace nu;
 
@@ -16,11 +11,6 @@ int main() {
             
     // ENGINE INITIALIZATION 
     Engine::Get().Initialize();
-    
-        
-    // SPACE GAME INITIALIZATION
-    SpaceGame game;
-    game.Initialize();
 
     // MAIN LOOP
     bool quit = false;
@@ -41,19 +31,14 @@ int main() {
         // ENGINE UPDATE (audio, input, time)
         Engine::Get().Update();
         float dt = Engine::Get().GetTime().GetDeltaTime();
-        game.Update(dt);
                         
         // RENDER
         Engine::Get().GetRenderer().SetColor(0.0f, 0.0f, 0.0f);
         Engine::Get().GetRenderer().Clear();
-
-        // DRAW SCENE
-        game.Draw(Engine::Get().GetRenderer());
         
         // PRESENT
         Engine::Get().GetRenderer().Present();
     }
-    game.Shutdown();
 
     // SHUTDOWN
     Engine::Get().Shutdown();
