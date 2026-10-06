@@ -2,6 +2,8 @@
 #include "Core/File.h"
 // Files use namespace fe::
 
+#include <map>
+
 using namespace nu;
 
 int main() {
@@ -9,7 +11,12 @@ int main() {
     fe::SetWorkingDirectory("Assets");
 
             
-    // ENGINE INITIALIZATION 
+    
+        
+    // SPACE GAME INITIALIZATION
+    SpaceGame game;
+    game.Initialize();
+
     Engine::Get().Initialize();
 
     // MAIN LOOP
@@ -31,9 +38,21 @@ int main() {
         // ENGINE UPDATE (audio, input, time)
         Engine::Get().Update();
         float dt = Engine::Get().GetTime().GetDeltaTime();
-                        
-        // RENDER
         Engine::Get().GetRenderer().BeginFrame();
+        
+        // DRAW SCENE
+        game.Draw(Engine::Get().GetRenderer());
+        
+        // DRAW SCENE
+        game.Draw(Engine::Get().GetRenderer());
+        
+        // DRAW SCENE
+        game.Draw(Engine::Get().GetRenderer());
+        
+        Engine::Get().GetRenderer().Clear();
+
+        // DRAW SCENE
+        game.Draw(Engine::Get().GetRenderer());
         
         // PRESENT
         Engine::Get().GetRenderer().EndFrame();
