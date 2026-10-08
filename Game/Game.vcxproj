@@ -102,6 +102,9 @@
       <AdditionalOptions>/WHOLEARCHIVE:Engine.lib %(AdditionalOptions)</AdditionalOptions>
       <AdditionalLibraryDirectories>$(SolutionDir)ThirdParty\box2d\lib;</AdditionalLibraryDirectories>
     </Link>
+    <PreBuildEvent>
+      <Command>"$(SolutionDir)Tools\compile_shaders.bat" "$(SolutionDir)Shaders" "$(SolutionDir)build\assets\shaders"</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -120,6 +123,9 @@
       <AdditionalOptions>/WHOLEARCHIVE:Engine.lib %(AdditionalOptions)</AdditionalOptions>
       <AdditionalLibraryDirectories>$(SolutionDir)ThirdParty\box2d\lib;</AdditionalLibraryDirectories>
     </Link>
+    <PreBuildEvent>
+      <Command>"$(SolutionDir)Tools\compile_shaders.bat" "$(SolutionDir)Shaders" "$(SolutionDir)build\assets\shaders"</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -137,6 +143,9 @@
       <AdditionalDependencies>%(AdditionalDependencies);sdl3.lib;sdl3_ttf.lib;sdl3_image.lib;box2dd.lib</AdditionalDependencies>
       <AdditionalOptions>/WHOLEARCHIVE:Engine.lib %(AdditionalOptions)</AdditionalOptions>
     </Link>
+    <PreBuildEvent>
+      <Command>"$(SolutionDir)Tools\compile_shaders.bat" "$(SolutionDir)Shaders" "$(SolutionDir)build\assets\shaders"</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -156,6 +165,9 @@
       <AdditionalOptions>/WHOLEARCHIVE:Engine.lib %(AdditionalOptions)</AdditionalOptions>
       <AdditionalLibraryDirectories>$(SolutionDir)ThirdParty\box2d\lib;</AdditionalLibraryDirectories>
     </Link>
+    <PreBuildEvent>
+      <Command>"$(SolutionDir)Tools\compile_shaders.bat" "$(SolutionDir)Shaders" "$(SolutionDir)build\assets\shaders"</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ProjectReference Include="..\Engine\Engine.vcxproj">
@@ -175,6 +187,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="..\Shaders\color.frag.hlsl">
+      <FileType>Document</FileType>
+    </CustomBuild>
+    <CustomBuild Include="..\Shaders\position.vert.hlsl">
+      <FileType>Document</FileType>
+    </CustomBuild>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
