@@ -25,9 +25,10 @@ namespace nu {
 	}
 
 	void Engine::Update() {
+		m_time.Tick(); 
+
 		m_audio.Update();
 		m_input.Update();
-		m_time.Tick();
 		m_particleSystem.Update(m_time.GetDeltaTime());
 		m_physics.Update(m_time.GetDeltaTime());
 	}
