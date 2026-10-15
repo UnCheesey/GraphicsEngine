@@ -2,6 +2,7 @@
 #include "Core/File.h"
 #include "Renderer/Shader.h"
 #include "Renderer/VertexBuffer.h"
+#include "Renderer/IndexBuffer.h"
 #include "Renderer/Pipeline.h"
 
 #include "Resources/ResourceManager.h"
@@ -10,6 +11,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/euler_angles.hpp>
+#include <glm/gtx/transform.hpp>
 
 // Files use namespace fe::
 
@@ -29,15 +31,14 @@ struct Vertex
 
 std::vector<Vertex> vertices =
 {
-    Vertex{ Vector3{ -0.7f, -0.5f, 0.0f }, Color4{ 1, 0, 0, 1} }, // Bottom-Left
-    Vertex{ Vector3{ 0.8f, -0.8f, 0.0f }, Color4{ 0, 1, 0, 1} }, // Bottom-Right
-    Vertex{ Vector3{ 0.3f,  0.3f, 0.0f }, Color4{ 0, 0, 1, 1} }, // Top-Middle  
+    Vertex{ Vector3{ -0.5f, -0.5f, 0.0f }, Color4{ 1, 0, 0, 1} }, // Bottom-Left
+    Vertex{ Vector3{  0.5f, -0.5f, 0.0f }, Color4{ 0, 1, 0, 1} }, // Bottom-Right
+    Vertex{ Vector3{  0.5f,  0.5f, 0.0f }, Color4{ 0, 0, 1, 1} }, // Top-Right  
+    Vertex{ Vector3{ -0.5f,  0.5f, 0.0f }, Color4{ 0, 1, 1, 1} }, // Top-Left  
+    
 };
 
-struct vertexUniform {
-    glm::mat4 model;
-
-};
+std::vector<uint32_t> indices = { 0 , 1, 2, 2, 3, 0 };
 
 int main() {
     // SET DIRECTORY
@@ -47,7 +48,10 @@ int main() {
     Engine::Get().Initialize();
 
     auto vb = std::make_shared<VertexBuffer>();
-    vb->Create<Vertex>(vertices, Engine::Get().GetRenderer().GetGPUDevice());
+    vb->Create<Vertex>(vertices, Engine::Get().GetRenderer());
+
+    auto ib = std::make_shared<IndexBuffer>();
+    ib->Create(static_cast<uint32_t>(indices.size()), indices.data(), Engine::Get().GetRenderer());
 
     auto vshader = Resources().Get<nu::Shader>("shaders/position.vert", Engine::Get().GetRenderer(), 1);
     auto fshader = Resources().Get<nu::Shader>("shaders/color.frag", Engine::Get().GetRenderer(), 1);
@@ -71,8 +75,13 @@ int main() {
         Engine::Get().GetRenderer().GetGPUDevice(),
         Engine::Get().GetRenderer().GetWindow());
 
-    vertexUniform uniform;
     Color4 color{0, 0, 0, 1};
+    struct vertexUniform {
+        glm::mat4 mvp;
+    };
+
+    vertexUniform uniform;
+    glm::vec3 cameraPosition{ 0, 0, 5};
 
     // MAIN LOOP
     bool quit = false;
@@ -92,36 +101,70 @@ int main() {
 
         
                         
-        // ENGINE UPDATE (audio, input, time)
+        // ENGINE
         Engine::Get().Update();
         float dt = Engine::Get().GetTime().GetDeltaTime();
         float time = Engine::Get().GetTime().GetTime();
 
+        color.r = (float)(sin(time * 10.0) * 0.5 + 0.5);
+
+        glm::vec3 direction{ 0 };
+        if (Engine::Get().GetInput().GetKeyDown(SDL_SCANCODE_A)) direction.x = -1;
+        if (Engine::Get().GetInput().GetKeyDown(SDL_SCANCODE_D)) direction.x = +1;
+        if (Engine::Get().GetInput().GetKeyDown(SDL_SCANCODE_E)) direction.y = +1;
+        if (Engine::Get().GetInput().GetKeyDown(SDL_SCANCODE_Q)) direction.y = -1;
+        if (Engine::Get().GetInput().GetKeyDown(SDL_SCANCODE_W)) direction.z = -1;
+        if (Engine::Get().GetInput().GetKeyDown(SDL_SCANCODE_S)) direction.z = +1;
+
+        cameraPosition += direction * 4.0f * dt;
+
+        // MODEL MATRIX
+        // 1 0 0 0
+        // 0 1 0 0
+        // 0 0 1 0
+        // 0 0 0 1
         // GLM TRANSFORMATION
         // uniform.model = glm::mat4(1.0f);
+        // uniform.model = glm::translate(uniform.model, glm::vec3(0.0f, 0.0f, 0.0f));
+        // uniform.model = glm::rotate(uniform.model, time * 3.0f, glm::vec3(1.0f, 1.0f, 1.0f));
+        // uniform.model = glm::scale(uniform.model, glm::vec3(0.5f, 0.5f, 0.5f));
 
-        auto mxt = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
-        /*auto mxr = glm::rotate(glm::mat4(1.0f), time * 100.0f, glm::vec3(1.0f, 1.0f, 1.0f));*/
-        auto mxr = glm::eulerAngleXYZ(1.2f, time * 3.0f, 0.0f);
-        auto mxs = glm::scale(glm::mat4(1.0f), glm::vec3(0.5f, 0.5f, 0.5f));
+        // 1 0 0 x
+        // 0 1 0 y
+        // 0 0 1 z
+        // 0 0 0 1
 
-        uniform.model = mxt * mxr * mxs;
+        auto mxt = glm::translate(glm::vec3(0.0f, 0.0f, 0.0f));
+        auto mxr = glm::eulerAngleXYZ(time * 0.0f, 0.0f, 0.0f);
 
-       /* uniform.model = glm::translate(uniform.model, glm::vec3(0.0f, 0.0f, 0.0f));
-        uniform.model = glm::rotate(uniform.model, time * 3.0f, glm::vec3(1.0f, 1.0f, 1.0f));
-        uniform.model = glm::scale(uniform.model, glm::vec3(0.5f, 0.5f, 0.5f));*/
+        // x 0 0 0
+        // 0 y 0 0
+        // 0 0 z 0
+        // 0 0 0 1
 
-        color.r = (float)(sin(time * 10.0) * 0.5 + 0.5);
+        auto mxs = glm::scale(glm::vec3{ 1 });
+        auto model = mxt * mxr * mxs;
+
+        // VIEW MATRIX
+        auto view = glm::lookAtRH(cameraPosition, cameraPosition + glm::vec3{ 0, 0, -1 }, glm::vec3{ 0, 1, 0 });
+
+        // PROJECTION MATRIX
+        float aspectRation = Engine::Get().GetRenderer().GetWidth() / static_cast<float>(Engine::Get().GetRenderer().GetHeight());
+        auto projection = glm::perspective(glm::radians(70.0f), aspectRation, 0.01f, 20.0f );
+                
+        uniform.mvp = projection * view * model;
 
         // RENDER
         Engine::Get().GetRenderer().BeginFrame();
 
         Engine::Get().GetRenderer().SetPipeline(*pipeline);
         Engine::Get().GetRenderer().SetVertexBuffer(*vb);
+        Engine::Get().GetRenderer().SetIndexBuffer(*ib);
         Engine::Get().GetRenderer().SetFragmentUniform(0, &color, sizeof(color));
         Engine::Get().GetRenderer().SetVertexUniform(0, &uniform, sizeof(uniform));
 
-        Engine::Get().GetRenderer().Draw(vb->GetVertexCount());
+        //Engine::Get().GetRenderer().Draw(vb->GetVertexCount());
+        Engine::Get().GetRenderer().DrawIndex(*ib);
 
         Engine::Get().GetRenderer().EndFrame();
     }

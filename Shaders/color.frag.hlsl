@@ -16,7 +16,7 @@ struct Output
 Output main(Input input)
 {
 	Output output;
-	output.color = color; // float4(0.7f, 0.1f, 0.6f, 1.0f);
+	output.color = input.color;
 
 	return output;
 }
