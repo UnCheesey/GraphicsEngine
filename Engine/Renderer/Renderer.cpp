@@ -165,31 +165,6 @@ namespace nu
         SDL_RenderTextureRotated(m_renderer, texture.m_texture, &sourceRect, &destRect, angle, NULL, flipH ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE);
     }
 
-    void Renderer::DrawModel(const Model& model, const Transform& transform) const {
-
-        for (auto mesh : model.GetMeshes()) {
-
-            SetColor(mesh.GetColor().r, mesh.GetColor().g, mesh.GetColor().b, 1.0f);
-            auto& points = mesh.GetPoints();
-            for (int i = 0; i < points.size() - 1; i++) {
-                Vector2 v1 = points[i]; // local space
-                Vector2 v2 = points[i + 1]; // local space
-
-                // convert to world space
-                v1 *= transform.scale;
-                v2 *= transform.scale;
-
-                v1 = v1.Rotate(transform.rotation * DegToRad);
-                v2 = v2.Rotate(transform.rotation * DegToRad);
-
-                v1 += transform.position;
-                v2 += transform.position;
-
-                DrawLine(v1.x, v1.y, v2.x, v2.y);
-            }
-        }
-    }
-
     void Renderer::SetPipeline(const Pipeline& pipeline)
     {
         // bind the pipeline to the current render pass with SDL_BindGPUGraphicsPipeline(renderPass, gpuPipeline)

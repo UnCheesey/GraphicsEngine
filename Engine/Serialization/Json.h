@@ -2,6 +2,7 @@
 
 #include "Math/Vector2.h"
 #include "Math/Vector3.h"
+#include <./glm/glm.hpp>
 
 #include <rapidjson/document.h>
 #include <string>
@@ -33,7 +34,7 @@ namespace json {
 	bool Read(const value_t& value, const std::string& name, float& data, bool required = false);
 	bool Read(const value_t& value, const std::string& name, bool& data, bool required = false);
 	bool Read(const value_t& value, const std::string& name, std::string& data, bool required = false);
-	bool Read(const value_t& value, const std::string& name, nu::Vector2& data, bool required = false);
-	bool Read(const value_t& value, const std::string& name, nu::Vector3& data, bool required = false);
+	bool Read(const value_t& value, const std::string& name, glm::vec2& data, bool required = false);
+	bool Read(const value_t& value, const std::string& name, glm::vec3& data, bool required = false);
 	bool Read(const value_t& value, const std::string& name, std::vector<int>& data, bool required = false);
 }

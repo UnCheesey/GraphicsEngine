@@ -1,5 +1,8 @@
 #include "Engine.h"
 #include "Core/File.h"
+
+#include "Math/Transform.h"
+
 #include "Renderer/Shader.h"
 #include "Renderer/VertexBuffer.h"
 #include "Renderer/IndexBuffer.h"
@@ -53,8 +56,8 @@ int main() {
     auto ib = std::make_shared<IndexBuffer>();
     ib->Create(static_cast<uint32_t>(indices.size()), indices.data(), Engine::Get().GetRenderer());
 
-    auto vshader = Resources().Get<nu::Shader>("shaders/position.vert", Engine::Get().GetRenderer(), 1);
-    auto fshader = Resources().Get<nu::Shader>("shaders/color.frag", Engine::Get().GetRenderer(), 1);
+    auto vshader = Resources().Get<nu::Shader>("shaders/unlit.vert", Engine::Get().GetRenderer(), 1);
+    auto fshader = Resources().Get<nu::Shader>("shaders/unlit.frag", Engine::Get().GetRenderer(), 1);
 
     auto pipeline = std::make_shared<Pipeline>();
     pipeline->AddVertexBuffer(sizeof(Vertex));
@@ -68,7 +71,7 @@ int main() {
     // color
     pipeline->AddVertexAttribute(
         1,
-        SDL_GPU_VERTEXELEMENTFORMAT_FLOAT4,
+        SDL_GPU_VERTEXELEMENTFORMAT_FLOAT2,
         offsetof(Vertex, color));
 
     pipeline->Create(*vshader.get(), *fshader.get(),
@@ -82,6 +85,8 @@ int main() {
 
     vertexUniform uniform;
     glm::vec3 cameraPosition{ 0, 0, 5};
+
+    Transform transform;
 
     // MAIN LOOP
     bool quit = false;
@@ -111,39 +116,15 @@ int main() {
         glm::vec3 direction{ 0 };
         if (Engine::Get().GetInput().GetKeyDown(SDL_SCANCODE_A)) direction.x = -1;
         if (Engine::Get().GetInput().GetKeyDown(SDL_SCANCODE_D)) direction.x = +1;
-        if (Engine::Get().GetInput().GetKeyDown(SDL_SCANCODE_E)) direction.y = +1;
-        if (Engine::Get().GetInput().GetKeyDown(SDL_SCANCODE_Q)) direction.y = -1;
-        if (Engine::Get().GetInput().GetKeyDown(SDL_SCANCODE_W)) direction.z = -1;
-        if (Engine::Get().GetInput().GetKeyDown(SDL_SCANCODE_S)) direction.z = +1;
+        if (Engine::Get().GetInput().GetKeyDown(SDL_SCANCODE_W)) direction.y = +1;
+        if (Engine::Get().GetInput().GetKeyDown(SDL_SCANCODE_S)) direction.y = -1;
+        if (Engine::Get().GetInput().GetKeyDown(SDL_SCANCODE_E)) direction.z = -1;
+        if (Engine::Get().GetInput().GetKeyDown(SDL_SCANCODE_Q)) direction.z = +1;
 
         cameraPosition += direction * 4.0f * dt;
 
-        // MODEL MATRIX
-        // 1 0 0 0
-        // 0 1 0 0
-        // 0 0 1 0
-        // 0 0 0 1
-        // GLM TRANSFORMATION
-        // uniform.model = glm::mat4(1.0f);
-        // uniform.model = glm::translate(uniform.model, glm::vec3(0.0f, 0.0f, 0.0f));
-        // uniform.model = glm::rotate(uniform.model, time * 3.0f, glm::vec3(1.0f, 1.0f, 1.0f));
-        // uniform.model = glm::scale(uniform.model, glm::vec3(0.5f, 0.5f, 0.5f));
-
-        // 1 0 0 x
-        // 0 1 0 y
-        // 0 0 1 z
-        // 0 0 0 1
-
-        auto mxt = glm::translate(glm::vec3(0.0f, 0.0f, 0.0f));
-        auto mxr = glm::eulerAngleXYZ(time * 0.0f, 0.0f, 0.0f);
-
-        // x 0 0 0
-        // 0 y 0 0
-        // 0 0 z 0
-        // 0 0 0 1
-
-        auto mxs = glm::scale(glm::vec3{ 1 });
-        auto model = mxt * mxr * mxs;
+        // TRANSFORM
+        transform.rotation.z = time * 90;
 
         // VIEW MATRIX
         auto view = glm::lookAtRH(cameraPosition, cameraPosition + glm::vec3{ 0, 0, -1 }, glm::vec3{ 0, 1, 0 });
@@ -152,7 +133,8 @@ int main() {
         float aspectRation = Engine::Get().GetRenderer().GetWidth() / static_cast<float>(Engine::Get().GetRenderer().GetHeight());
         auto projection = glm::perspective(glm::radians(70.0f), aspectRation, 0.01f, 20.0f );
                 
-        uniform.mvp = projection * view * model;
+        // MVP
+        uniform.mvp = projection * view * transform.GetMatrix();
 
         // RENDER
         Engine::Get().GetRenderer().BeginFrame();
