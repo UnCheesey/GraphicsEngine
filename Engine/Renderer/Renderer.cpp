@@ -136,35 +136,6 @@ namespace nu
         SDL_RenderRect(m_renderer, &rect);
     }
 
-    void Renderer::DrawTexture(const Texture& texture, float x, float y, float angle, float scale, bool flipH) const {
-
-        Vector2 size = texture.GetSize();
-
-        SDL_FRect destRect;
-        destRect.w = size.x * scale;
-        destRect.h = size.y * scale;
-        destRect.x = x - (destRect.w * 0.5f);
-        destRect.y = y - (destRect.h * 0.5f);
-
-        SDL_RenderTextureRotated(m_renderer, texture.m_texture, NULL, &destRect, angle, NULL, flipH ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE);
-    }
-
-    void Renderer::DrawTexture(const Texture& texture, const Rect& source, float x, float y, float angle, float scale, bool flipH) const {
-        SDL_FRect sourceRect;
-        sourceRect.x = source.x;
-        sourceRect.y = source.y;
-        sourceRect.w = source.w;
-        sourceRect.h = source.h;
-
-        SDL_FRect destRect;
-        destRect.w = source.w * scale;
-        destRect.h = source.h * scale;
-        destRect.x = x - (destRect.w * 0.5f);
-        destRect.y = y - (destRect.h * 0.5f);
-
-        SDL_RenderTextureRotated(m_renderer, texture.m_texture, &sourceRect, &destRect, angle, NULL, flipH ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE);
-    }
-
     void Renderer::SetPipeline(const Pipeline& pipeline)
     {
         // bind the pipeline to the current render pass with SDL_BindGPUGraphicsPipeline(renderPass, gpuPipeline)
@@ -246,5 +217,14 @@ namespace nu
     void Renderer::SetFragmentUniform(uint32_t slot, const void* data, uint32_t size)
     {
         SDL_PushGPUFragmentUniformData(m_commandBuffer, slot, data, size);
+    }
+
+    void Renderer::SetFragmentTexture(uint32_t slot, const Texture& texture) {
+        SDL_GPUTextureSamplerBinding binding{
+            .texture = texture.m_gpuTexture,
+            .sampler = texture.m_gpuSampler
+        };
+
+        SDL_BindGPUFragmentSamplers(m_renderPass, slot, &binding, 1);
     }
 }
