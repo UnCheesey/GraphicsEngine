@@ -20,29 +20,6 @@
 
 using namespace nu;
 
-namespace nu {
-    struct Color4 {
-        float r, g, b, a;
-    };
-}
-
-struct Vertex
-{
-    Vector3 position;
-    Color4 color;
-};
-
-std::vector<Vertex> vertices =
-{
-    Vertex{ Vector3{ -0.5f, -0.5f, 0.0f }, Color4{ 1, 0, 0, 1} }, // Bottom-Left
-    Vertex{ Vector3{  0.5f, -0.5f, 0.0f }, Color4{ 0, 1, 0, 1} }, // Bottom-Right
-    Vertex{ Vector3{  0.5f,  0.5f, 0.0f }, Color4{ 0, 0, 1, 1} }, // Top-Right  
-    Vertex{ Vector3{ -0.5f,  0.5f, 0.0f }, Color4{ 0, 1, 1, 1} }, // Top-Left  
-    
-};
-
-std::vector<uint32_t> indices = { 0 , 1, 2, 2, 3, 0 };
-
 int main() {
     // SET DIRECTORY
     fe::SetWorkingDirectory("Assets");
@@ -53,8 +30,8 @@ int main() {
     auto model = Resources().Get<Model>("models/spot.obj", Engine::Get().GetRenderer());
     auto texture = Resources().Get<Texture>("textures/spot_diffuse.png", Engine::Get().GetRenderer());
 
-    auto vshader = Resources().Get<nu::Shader>("shaders/unlit.vert", Engine::Get().GetRenderer(), 1);
-    auto fshader = Resources().Get<nu::Shader>("shaders/unlit.frag", Engine::Get().GetRenderer(), 1, 1);
+    auto vshader = Resources().Get<nu::Shader>("shaders/lit.vert", Engine::Get().GetRenderer(), 1);
+    auto fshader = Resources().Get<nu::Shader>("shaders/lit.frag", Engine::Get().GetRenderer(), 1, 1);
 
     auto pipeline = std::make_shared<Pipeline>();
 
@@ -68,7 +45,7 @@ int main() {
         Engine::Get().GetRenderer().GetGPUDevice(),
         Engine::Get().GetRenderer().GetWindow());
 
-    Color4 color{0, 0, 0, 1};
+    glm::vec4 color{1, 1, 1, 1};
     struct vertexUniform {
         glm::mat4 mvp;
     };
@@ -112,7 +89,7 @@ int main() {
         cameraPosition += direction * 4.0f * dt;
 
         // TRANSFORM
-        transform.rotation.x = 180;
+        //transform.rotation.x = 180;
 
         // VIEW MATRIX
         auto view = glm::lookAtRH(cameraPosition, cameraPosition + glm::vec3{ 0, 0, -1 }, glm::vec3{ 0, 1, 0 });

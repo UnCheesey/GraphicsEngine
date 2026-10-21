@@ -44,6 +44,8 @@ namespace nu
 
         std::cout << "GPU Driver: " << SDL_GetGPUDeviceDriver(m_gpuDevice) << std::endl;
 
+        CreateDepthBuffer();
+
         return true;
     }
 
@@ -92,12 +94,24 @@ namespace nu
         if (swapchainTexture != nullptr)
         {
             // configure the color target attachments (This handles clearing the screen)
-            SDL_GPUColorTargetInfo color_target_info{};
-            color_target_info.texture = swapchainTexture;
-            color_target_info.clear_color = SDL_FColor{ 0.2f, 0.2f, 0.2f, 1.0f };
-            color_target_info.load_op = SDL_GPU_LOADOP_CLEAR;
-            color_target_info.store_op = SDL_GPU_STOREOP_STORE;
-            m_renderPass = SDL_BeginGPURenderPass(m_commandBuffer, &color_target_info, 1, nullptr);
+            SDL_GPUColorTargetInfo color_target_info{
+            .texture = swapchainTexture,
+            .clear_color = SDL_FColor{ 0.3f, 0.3f, 0.3f, 1.0f },
+            .load_op = SDL_GPU_LOADOP_CLEAR,
+            .store_op = SDL_GPU_STOREOP_STORE
+            };
+
+            // configure the depth target (This handles the depth sorting)
+            SDL_GPUDepthStencilTargetInfo depth_target_info{
+            .texture = m_depthTexture,
+            .clear_depth = 1.0f,
+            .load_op = SDL_GPU_LOADOP_CLEAR,
+            .store_op = SDL_GPU_STOREOP_DONT_CARE,
+            .stencil_load_op = SDL_GPU_LOADOP_DONT_CARE,
+            .stencil_store_op = SDL_GPU_STOREOP_DONT_CARE
+            };
+
+            m_renderPass = SDL_BeginGPURenderPass(m_commandBuffer, &color_target_info, 1, &depth_target_info);
         }
         return true;
     }
@@ -219,12 +233,30 @@ namespace nu
         SDL_PushGPUFragmentUniformData(m_commandBuffer, slot, data, size);
     }
 
-    void Renderer::SetFragmentTexture(uint32_t slot, const Texture& texture) {
+    void Renderer::SetFragmentTexture(uint32_t slot, const Texture& texture)
+    {
         SDL_GPUTextureSamplerBinding binding{
             .texture = texture.m_gpuTexture,
             .sampler = texture.m_gpuSampler
         };
 
         SDL_BindGPUFragmentSamplers(m_renderPass, slot, &binding, 1);
+    }
+
+    void Renderer::CreateDepthBuffer()
+    {
+        SDL_GPUTextureCreateInfo depthInfo
+        {
+            .type = SDL_GPU_TEXTURETYPE_2D,
+            .format = SDL_GPU_TEXTUREFORMAT_D32_FLOAT,
+            .usage = SDL_GPU_TEXTUREUSAGE_DEPTH_STENCIL_TARGET,
+            .width = (uint32_t)m_width,
+            .height = (uint32_t)m_height,
+            .layer_count_or_depth = 1,
+            .num_levels = 1,
+            .sample_count = SDL_GPU_SAMPLECOUNT_1
+        };
+
+        m_depthTexture = SDL_CreateGPUTexture(m_gpuDevice, &depthInfo);
     }
 }

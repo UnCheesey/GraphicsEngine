@@ -42,8 +42,9 @@ namespace nu
 
 		void SetVertexUniform(uint32_t slot, const void* data, uint32_t size);
 		void SetFragmentUniform(uint32_t slot, const void* data, uint32_t size);
-
 		void SetFragmentTexture(uint32_t slot, const class Texture& texture);
+
+		void CreateDepthBuffer();
 
 		friend class Text;
 		friend class Texture;
@@ -58,6 +59,7 @@ namespace nu
 		SDL_GPUDevice* m_gpuDevice = nullptr;
 		SDL_GPUCommandBuffer* m_commandBuffer = nullptr;
 		SDL_GPURenderPass* m_renderPass = nullptr;
+		SDL_GPUTexture* m_depthTexture = nullptr;
 
 		int m_width = 0;
 		int m_height = 0;

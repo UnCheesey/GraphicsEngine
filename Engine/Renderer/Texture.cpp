@@ -126,7 +126,6 @@ namespace nu
 		// unmap the transfer buffer with SDL_UnmapGPUTransferBuffer(device, transferBuffer)
 		// the cpu is done writing, so the gpu can now use it
 		// todo
-
 		SDL_UnmapGPUTransferBuffer(m_gpuDevice, transferBuffer);
 
 		// the pixels are in the transfer buffer now, so the surface is no longer needed
