@@ -25,8 +25,8 @@ int main() {
     // INITIALIZATION
     Engine::Get().Initialize();
 
-    auto model = Resources().Get<Model>("models/spot.obj", Engine::Get().GetRenderer());
-    auto texture = Resources().Get<Texture>("textures/spot_diffuse.png", Engine::Get().GetRenderer());
+    auto model = Resources().Get<Model>("models/redhood.obj", Engine::Get().GetRenderer());
+    auto texture = Resources().Get<Texture>("textures/redhood.png", Engine::Get().GetRenderer());
 
     auto vshader = Resources().Get<nu::Shader>("shaders/lit.vert", Engine::Get().GetRenderer(), 2);
     auto fshader = Resources().Get<nu::Shader>("shaders/lit.frag", Engine::Get().GetRenderer(), 1, 1);
@@ -64,8 +64,8 @@ int main() {
     };
 
     LightUniform lightUniform{
-        .lightDirection{0, -1, 0},
-        .lightColor{ 1, 0, 0 },
+        .lightDirection{0, 0, 2},
+        .lightColor{ 0.95f, 0.96f, 1 },
         .lightIntensity{ 1 },
         .ambient{ 0.1f }
     };

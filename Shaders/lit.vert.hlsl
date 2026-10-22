@@ -36,7 +36,7 @@ Output main(Input input)
     
     // DIFFUSE
     float3 N = normalize(mul((float3x3) model, input.normal));
-    float3 L = -lightDirection;
+    float3 L = lightDirection;
     float NdotL = saturate(dot(N, L));
     
     float3 diffuse = lightColor * lightIntensity * NdotL;
