@@ -18,7 +18,7 @@ namespace nu {
 
         const glm::mat4& GetMatrix() {
             auto mxt = glm::translate(position);
-            auto mxr = glm::eulerAngleXYZ(glm::radians(rotation.y), glm::radians(rotation.x), glm::radians(rotation.z));
+            auto mxr = glm::eulerAngleXYZ(glm::radians(rotation.x), glm::radians(rotation.y), glm::radians(rotation.z));
             auto mxs = glm::scale(scale);
 
             matrix = mxt * mxr * mxs;

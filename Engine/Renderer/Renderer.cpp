@@ -96,7 +96,7 @@ namespace nu
             // configure the color target attachments (This handles clearing the screen)
             SDL_GPUColorTargetInfo color_target_info{
             .texture = swapchainTexture,
-            .clear_color = SDL_FColor{ 0.3f, 0.3f, 0.3f, 1.0f },
+            .clear_color = SDL_FColor{ 0.1f, 0.1f, 0.1f, 1.0f },
             .load_op = SDL_GPU_LOADOP_CLEAR,
             .store_op = SDL_GPU_STOREOP_STORE
             };

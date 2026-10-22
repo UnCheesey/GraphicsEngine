@@ -16,12 +16,10 @@
 #include <glm/gtx/euler_angles.hpp>
 #include <glm/gtx/transform.hpp>
 
-// Files use namespace fe::
-
 using namespace nu;
 
 int main() {
-    // SET DIRECTORY
+    // SET DIRECTORY -- Files use namespace fe::
     fe::SetWorkingDirectory("Assets");
 
     // INITIALIZATION
@@ -30,7 +28,7 @@ int main() {
     auto model = Resources().Get<Model>("models/spot.obj", Engine::Get().GetRenderer());
     auto texture = Resources().Get<Texture>("textures/spot_diffuse.png", Engine::Get().GetRenderer());
 
-    auto vshader = Resources().Get<nu::Shader>("shaders/lit.vert", Engine::Get().GetRenderer(), 1);
+    auto vshader = Resources().Get<nu::Shader>("shaders/lit.vert", Engine::Get().GetRenderer(), 2);
     auto fshader = Resources().Get<nu::Shader>("shaders/lit.frag", Engine::Get().GetRenderer(), 1, 1);
 
     auto pipeline = std::make_shared<Pipeline>();
@@ -45,12 +43,34 @@ int main() {
         Engine::Get().GetRenderer().GetGPUDevice(),
         Engine::Get().GetRenderer().GetWindow());
 
-    glm::vec4 color{1, 1, 1, 1};
-    struct vertexUniform {
+    // UNIFORMS
+    glm::vec4 tint{1, 1, 1, 1};
+    struct vertexUniform
+    {
         glm::mat4 mvp;
+        glm::mat4 model;
     };
 
-    vertexUniform uniform;
+    vertexUniform vertexUniform;
+
+    struct LightUniform
+    {   
+        glm::vec3 lightDirection;
+        float padding1;
+        glm::vec3 lightColor;
+        float lightIntensity;
+        glm::vec3 ambient;
+        float padding2;
+    };
+
+    LightUniform lightUniform{
+        .lightDirection{0, -1, 0},
+        .lightColor{ 1, 0, 0 },
+        .lightIntensity{ 1 },
+        .ambient{ 0.1f }
+    };
+
+
     glm::vec3 cameraPosition{ 0, 0, 5};
 
     Transform transform;
@@ -69,9 +89,7 @@ int main() {
             if (event.type == SDL_EVENT_KEY_DOWN && event.key.scancode == SDL_SCANCODE_ESCAPE) {
                 quit = true;
             }
-        }
-
-        
+        }        
                         
         // ENGINE
         Engine::Get().Update();
@@ -89,7 +107,7 @@ int main() {
         cameraPosition += direction * 4.0f * dt;
 
         // TRANSFORM
-        //transform.rotation.x = 180;
+        transform.rotation.y = time * 90;
 
         // VIEW MATRIX
         auto view = glm::lookAtRH(cameraPosition, cameraPosition + glm::vec3{ 0, 0, -1 }, glm::vec3{ 0, 1, 0 });
@@ -97,17 +115,18 @@ int main() {
         // PROJECTION MATRIX
         float aspectRation = Engine::Get().GetRenderer().GetWidth() / static_cast<float>(Engine::Get().GetRenderer().GetHeight());
         auto projection = glm::perspective(glm::radians(70.0f), aspectRation, 0.01f, 20.0f );
-
                 
         // MVP
-        uniform.mvp = projection * view * transform.GetMatrix();
+        vertexUniform.model = transform.GetMatrix();
+        vertexUniform.mvp = projection * view * vertexUniform.model;
 
         // RENDER
         Engine::Get().GetRenderer().BeginFrame();
 
         Engine::Get().GetRenderer().SetPipeline(*pipeline);
-        Engine::Get().GetRenderer().SetVertexUniform(0, &uniform, sizeof(uniform));
-        Engine::Get().GetRenderer().SetFragmentUniform(0, &color, sizeof(color));
+        Engine::Get().GetRenderer().SetVertexUniform(0, &vertexUniform, sizeof(vertexUniform));
+        Engine::Get().GetRenderer().SetVertexUniform(1, &lightUniform, sizeof(lightUniform));
+        Engine::Get().GetRenderer().SetFragmentUniform(0, &tint, sizeof(tint));
         Engine::Get().GetRenderer().SetFragmentTexture(0, *texture);
 
         model->Draw(Engine::Get().GetRenderer());
