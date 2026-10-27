@@ -1,0 +1,68 @@
+#include "lighting.hlsli"
+
+cbuffer VertexUniforms : register(b0, space1)
+{
+    float4x4 mvp;
+    float4x4 model;
+    float3 cameraPosition;
+    float padding1;
+}
+
+cbuffer LightUniforms : register(b1, space1)
+{
+    Light light;
+}
+
+cbuffer MaterialUniforms : register(b2, space1)
+{
+    Material material;
+}
+
+struct Input
+{
+    float3 position : TEXCOORD0;
+    float2 texcoord : TEXCOORD1;
+    float3 normal : TEXCOORD2;
+};
+
+struct Output
+{
+    float4 position : SV_Position;
+    float2 texcood : TEXCOORD0;
+    float3 diffuse : TEXCOORD1;
+    float3 specular : TEXCOORD2;
+};
+
+Output main(Input input)
+{
+    Output output;
+    output.texcood = (input.texcoord * material.tiling ) + material.offset;
+    output.position = mul(mvp, float4(input.position, 1.0f));
+    
+    // WORLD POSITION
+    float3 worldPosition = mul(model, float4(input.position, 1.0f)).xyz;
+    float3 radiance = light.color * light.intensity;
+    float attenuation;
+    float3 L = getLightVector(light, worldPosition, attenuation);
+    float3 N = normalize(mul((float3x3) model, input.normal));
+    
+    // DIFFUSE
+    
+    float NdotL = saturate(dot(N, L));
+    float3 diffuse = radiance * NdotL * attenuation;
+    output.diffuse = light.ambient + diffuse;
+    
+    // SPECULAR
+    output.specular = float3(0, 0, 0);
+    
+    if (NdotL > 0)
+    {      
+        float3 V = normalize(cameraPosition - worldPosition);
+        float3 H = normalize(L + V);
+        float HdotN = saturate(dot(H, N));
+        HdotN = pow(HdotN, material.shine);
+        output.specular = radiance * HdotN * attenuation;
+    }
+
+    return output;
+}
