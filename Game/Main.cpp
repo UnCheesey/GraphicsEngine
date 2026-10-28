@@ -16,6 +16,8 @@
 #include <glm/gtx/euler_angles.hpp>
 #include <glm/gtx/transform.hpp>
 
+#define CHECK_UNIFORM_BOUNDARY(T) static_assert((sizeof(T) % 16) == 0);
+
 using namespace nu;
 
 enum class LightType : uint32_t
@@ -32,11 +34,11 @@ int main() {
     // INITIALIZATION
     Engine::Get().Initialize();
 
-    auto model = Resources().Get<Model>("models/spot.obj", Engine::Get().GetRenderer());
-    auto texture = Resources().Get<Texture>("textures/spot_diffuse.png", Engine::Get().GetRenderer());
+    auto model = Resources().Get<Model>("models/sphere.obj", Engine::Get().GetRenderer());
+    auto texture = Resources().Get<Texture>("textures/redhood.png", Engine::Get().GetRenderer());
 
-    auto vshader = Resources().Get<nu::Shader>("shaders/gouraud.vert", Engine::Get().GetRenderer(), 3);
-    auto fshader = Resources().Get<nu::Shader>("shaders/gouraud.frag", Engine::Get().GetRenderer(), 1, 1);
+    auto vshader = Resources().Get<nu::Shader>("shaders/phong.vert", Engine::Get().GetRenderer(), 3);
+    auto fshader = Resources().Get<nu::Shader>("shaders/phong.frag", Engine::Get().GetRenderer(), 3, 1);
 
     auto pipeline = std::make_shared<Pipeline>();
 
@@ -51,39 +53,42 @@ int main() {
         Engine::Get().GetRenderer().GetWindow());
 
     // UNIFORMS
-    struct vertexUniform
+    struct VertexUniform
     {
         glm::mat4 mvp;
         glm::mat4 model;
         glm::vec3 cameraPosition;
         float padding1;
     };
-
-    vertexUniform vertexUniform;
+    CHECK_UNIFORM_BOUNDARY(VertexUniform)
+    VertexUniform vertexUniform;
 
     struct LightUniform
     {   
         glm::vec3 position;
         LightType type;
         glm::vec3 direction;
-        float innerCutoff;
-        float padding2;
+        float range;
         glm::vec3 color;
         float intensity;
         glm::vec3 ambient;
-        float padding3;
+        float innerCutoff;
         float outerCutoff;
+        glm::vec3 padding;
     };
 
+    CHECK_UNIFORM_BOUNDARY(LightUniform)
+
     LightUniform lightUniform{
-        .position{ 10, 10, 10},
+        .position{ 5, 5, 5},
         .type{ LightType::Point },
         .direction{0, -1, 0},
-        .innerCutoff{ 0.3f },
+        .range{ 15 },
         .color{ 1, 1, 1 },
         .intensity{ 1 },
         .ambient{ 0.1f },
-        .outerCutoff{ 2.6f }
+        .innerCutoff{ 0.3f },
+        .outerCutoff{ 1.6f }
     };
 
     struct MaterialUniform
@@ -92,7 +97,10 @@ int main() {
         glm::vec2 tiling;
         glm::vec2 offset;
         float shine;
+        glm::vec3 padding;
     };
+
+    CHECK_UNIFORM_BOUNDARY(MaterialUniform)
 
     MaterialUniform materialUniform
     {
@@ -139,11 +147,13 @@ int main() {
 
         if (Engine::Get().GetInput().GetKeyDown(SDL_SCANCODE_1)) lightUniform.type = LightType::Directional;
         if (Engine::Get().GetInput().GetKeyDown(SDL_SCANCODE_2)) lightUniform.type = LightType::Point;
+
         if (Engine::Get().GetInput().GetKeyDown(SDL_SCANCODE_3)) {
             lightUniform.type = LightType::Spot;
-            lightUniform.position = glm::vec3{ 0, 3, 0 };
+            lightUniform.position = glm::vec3{ 0, 6, 0 };
+            lightUniform.innerCutoff = glm::cos(glm::radians(30.0f));
+            lightUniform.outerCutoff = glm::cos(glm::radians(50.0f));
         }
-
 
         //materialUniform.offset.x = time * .3f;
 
@@ -169,7 +179,10 @@ int main() {
         Engine::Get().GetRenderer().SetVertexUniform(1, &lightUniform, sizeof(lightUniform));
         Engine::Get().GetRenderer().SetVertexUniform(2, &materialUniform, sizeof(materialUniform));
 
-        Engine::Get().GetRenderer().SetFragmentUniform(0, &materialUniform, sizeof(materialUniform));
+        Engine::Get().GetRenderer().SetFragmentUniform(0, &vertexUniform, sizeof(vertexUniform));
+        Engine::Get().GetRenderer().SetFragmentUniform(1, &lightUniform, sizeof(lightUniform));
+        Engine::Get().GetRenderer().SetFragmentUniform(2, &materialUniform, sizeof(materialUniform));
+
         Engine::Get().GetRenderer().SetFragmentTexture(0, *texture);
 
         model->Draw(Engine::Get().GetRenderer());
