@@ -4,6 +4,8 @@
 #define LIGHT_POINT 1
 #define LIGHT_SPOT 2
 
+static const uint MAX_LIGHTS = 8;
+
 struct Material
 {
     float4 color;
@@ -67,15 +69,13 @@ float3 getLightVector(Light light, float3 position, out float attenuation)
 
 float3 calculateDiffuse(float3 radiance, float3 N, float3 L)
 {
-    float NdotL = saturate(dot(N, L));
-    
-    return radiance * NdotL;
+    return radiance * saturate(dot(N, L));
 };
 
 float3 calculateSpecular(float3 radiance, float3 N, float3 L, float3 V, Material material)
 {
     float3 specular = float3(0, 0, 0 );
-    if (saturate(dot(N, L)) > 0)
+    if (dot(N, L) > 0)
     {
         float3 H = normalize(V + L);
         float3 HdotN = saturate(dot(H, N));
@@ -95,6 +95,6 @@ void calculateLighting(Light light, Material material, float3 position, float3 N
     // light arriving at the surface
     float3 radiance = light.color * light.intensity * attenuation;
 
-    diffuse = light.ambient + calculateDiffuse(radiance, N, L);
-    specular = calculateSpecular(radiance, N, L, V, material);
+    diffuse += calculateDiffuse(radiance, N, L);
+    specular += calculateSpecular(radiance, N, L, V, material);
 }
