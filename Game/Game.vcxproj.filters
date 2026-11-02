@@ -4,9 +4,15 @@
     <Filter Include="Assets">
       <UniqueIdentifier>{7996c22d-74c0-4002-a1cd-a87568519f01}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Assets\Scenes">
+      <UniqueIdentifier>{a33ff5b0-ef84-4740-89e3-33837687f8cf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />
+    <None Include="..\Build\Assets\Scenes\scene.json">
+      <Filter>Assets\Scenes</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp" />

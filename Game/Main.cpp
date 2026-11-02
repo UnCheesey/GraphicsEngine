@@ -34,6 +34,8 @@ int main() {
 
     // INITIALIZATION
     Engine::Get().Initialize();
+    Scene scene;
+    scene.Load("scenes/scene.json");
 
     auto model = Resources().Get<Model>("models/redhood.obj", Engine::Get().GetRenderer());
     auto texture = Resources().Get<Texture>("textures/redhood.png", Engine::Get().GetRenderer());
