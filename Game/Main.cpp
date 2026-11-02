@@ -113,8 +113,8 @@ int main() {
     };
 
     lightUniform.lights[0] = light1;
-    lightUniform.lights[1] = light2;
-    lightUniform.numLights = 2;
+    //lightUniform.lights[1] = light2;
+    lightUniform.numLights = 1;
     lightUniform.ambient = glm::vec3{ 0.2f };
 
     struct MaterialUniform
@@ -133,7 +133,7 @@ int main() {
         .color{ 1, 1, 1, 1},
         .tiling{ 1.0f, 1.0f},
         .offset{ 0.0f, 0.0f },
-        .shine{ 64.0f }
+        .shine{ 128.0f }
     };
 
     vertexUniform.cameraPosition = glm::vec3{ 0, 3, 8 };
@@ -172,18 +172,18 @@ int main() {
 
         vertexUniform.cameraPosition += direction * 4.0f * dt;
 
-        lightUniform.lights[0].position = glm::eulerAngleY(time) * glm::vec4{ 0, 0, 10, 1};
-        lightUniform.lights[1].position = glm::eulerAngleX(time * 0.5f) * glm::vec4{ 0, 0, 10, 1};
+        // lightUniform.lights[0].position = glm::eulerAngleY(time) * glm::vec4{ 0, 0, 10, 1};
+        // lightUniform.lights[1].position = glm::eulerAngleX(time * 0.5f) * glm::vec4{ 0, 0, 10, 1};
 
-        /*if (Engine::Get().GetInput().GetKeyDown(SDL_SCANCODE_1)) lightUniform.type = LightType::Directional;
-        if (Engine::Get().GetInput().GetKeyDown(SDL_SCANCODE_2)) lightUniform.type = LightType::Point;
+        if (Engine::Get().GetInput().GetKeyDown(SDL_SCANCODE_1)) lightUniform.lights->type = LightType::Directional;
+        if (Engine::Get().GetInput().GetKeyDown(SDL_SCANCODE_2)) lightUniform.lights->type = LightType::Point;
 
         if (Engine::Get().GetInput().GetKeyDown(SDL_SCANCODE_3)) {
-            lightUniform.type = LightType::Spot;
-            lightUniform.position = glm::vec3{ 0, 10, 0 };
-            lightUniform.innerCutoff = glm::cos(glm::radians(10.0f));
-            lightUniform.outerCutoff = glm::cos(glm::radians(40.0f));
-        }*/
+            lightUniform.lights->type = LightType::Spot;
+            lightUniform.lights->position = glm::vec3{ 0, 10, 0 };
+            lightUniform.lights->innerCutoff = glm::cos(glm::radians(10.0f));
+            lightUniform.lights->outerCutoff = glm::cos(glm::radians(40.0f));
+        }
 
         //materialUniform.offset.x = time * .3f;
 
