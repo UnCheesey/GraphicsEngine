@@ -22,6 +22,7 @@ namespace nu {
 		const bool* keyState = SDL_GetKeyboardState(NULL);
 		std::copy(keyState, keyState + m_keyStates.size(), m_keyStates.begin());
 
+		m_prevMousePosition = m_mousePos;
 		m_prevButtonStates = m_buttonStates; // store last frame button states
 		m_buttonStates = SDL_GetMouseState(&m_mousePos.x, &m_mousePos.y);
 

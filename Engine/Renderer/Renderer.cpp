@@ -4,6 +4,7 @@
 #include "Pipeline.h"
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
+#include "MaterialInstance.h"
 
 #include "Math/Transform.h"
 #include "Math/Rect.h"
@@ -30,7 +31,9 @@ namespace nu
             return false;
         }
 
+        // create gpu device
         SDL_GPUShaderFormat formats = SDL_GPU_SHADERFORMAT_SPIRV | SDL_GPU_SHADERFORMAT_DXIL;
+        SDL_SetHint(SDL_HINT_GPU_DRIVER, "vulkan");
         m_gpuDevice = SDL_CreateGPUDevice(formats, true, nullptr);
         if (!m_gpuDevice) {
             std::cerr << "Failed to create GPU Device" << SDL_GetError() << std::endl;
@@ -42,7 +45,7 @@ namespace nu
         // Claim the window for our modern GPU Socket
         SDL_ClaimWindowForGPUDevice(m_gpuDevice, m_window);
 
-        std::cout << "GPU Driver: " << SDL_GetGPUDeviceDriver(m_gpuDevice) << std::endl;
+        std::cout << "GPU Driver Initialized: " << SDL_GetGPUDeviceDriver(m_gpuDevice) << std::endl;
 
         CreateDepthBuffer();
 
@@ -91,25 +94,24 @@ namespace nu
             std::cerr << "Could not acquire swapchain texture: " << SDL_GetError() << std::endl;
             return false;
         }
+
         if (swapchainTexture != nullptr)
         {
             // configure the color target attachments (This handles clearing the screen)
-            SDL_GPUColorTargetInfo color_target_info{
-            .texture = swapchainTexture,
-            .clear_color = SDL_FColor{ 0.1f, 0.1f, 0.1f, 1.0f },
-            .load_op = SDL_GPU_LOADOP_CLEAR,
-            .store_op = SDL_GPU_STOREOP_STORE
-            };
+            SDL_GPUColorTargetInfo color_target_info{};
+            color_target_info.texture = swapchainTexture;
+            color_target_info.clear_color = SDL_FColor{ 0.1f, 0.1f, 0.1f, 1.0f };
+            color_target_info.load_op = SDL_GPU_LOADOP_CLEAR;
+            color_target_info.store_op = SDL_GPU_STOREOP_STORE;
 
             // configure the depth target (This handles the depth sorting)
-            SDL_GPUDepthStencilTargetInfo depth_target_info{
-            .texture = m_depthTexture,
-            .clear_depth = 1.0f,
-            .load_op = SDL_GPU_LOADOP_CLEAR,
-            .store_op = SDL_GPU_STOREOP_DONT_CARE,
-            .stencil_load_op = SDL_GPU_LOADOP_DONT_CARE,
-            .stencil_store_op = SDL_GPU_STOREOP_DONT_CARE
-            };
+            SDL_GPUDepthStencilTargetInfo depth_target_info{};
+            depth_target_info.texture = m_depthTexture;
+            depth_target_info.clear_depth = 1.0f;
+            depth_target_info.load_op = SDL_GPU_LOADOP_CLEAR;
+            depth_target_info.store_op = SDL_GPU_STOREOP_DONT_CARE;
+            depth_target_info.stencil_load_op = SDL_GPU_LOADOP_DONT_CARE;
+            depth_target_info.stencil_store_op = SDL_GPU_STOREOP_DONT_CARE;
 
             m_renderPass = SDL_BeginGPURenderPass(m_commandBuffer, &color_target_info, 1, &depth_target_info);
         }
@@ -129,6 +131,9 @@ namespace nu
             std::cerr << "Could not submit command buffer: " << SDL_GetError() << std::endl;
             return false;
         }
+
+        m_commandBuffer = nullptr;
+
         return true;
     }
 
@@ -150,7 +155,7 @@ namespace nu
         SDL_RenderRect(m_renderer, &rect);
     }
 
-    void Renderer::SetPipeline(const Pipeline& pipeline)
+    void Renderer::SetPipeline(const Pipeline& pipeline) const
     {
         // bind the pipeline to the current render pass with SDL_BindGPUGraphicsPipeline(renderPass, gpuPipeline)
         // the pipeline sets the shaders and render settings used by the draw calls that follow
@@ -159,7 +164,7 @@ namespace nu
 
     }
 
-    void Renderer::SetVertexBuffer(const VertexBuffer& vertexBuffer)
+    void Renderer::SetVertexBuffer(const VertexBuffer& vertexBuffer) const
     {
         // describe which buffer to bind and where to start reading from
         SDL_GPUBufferBinding binding{
@@ -182,7 +187,7 @@ namespace nu
         );
     }
 
-    void Renderer::SetIndexBuffer(const IndexBuffer& indexBuffer)
+    void Renderer::SetIndexBuffer(const IndexBuffer& indexBuffer) const
     {
         // describe which buffer to bind and where to start reading from
         SDL_GPUBufferBinding binding{
@@ -203,7 +208,7 @@ namespace nu
         );
     }
 
-    void Renderer::Draw(uint32_t vertexCount)
+    void Renderer::Draw(uint32_t vertexCount) const
     {
         // draw using the currently bound pipeline and vertex buffer with SDL_DrawGPUPrimitives()
         // parameters:
@@ -214,7 +219,7 @@ namespace nu
         //   first instance - 0, start at the first instance
         SDL_DrawGPUPrimitives(m_renderPass, vertexCount, 1, 0, 0);
     }
-    void Renderer::DrawIndex(const IndexBuffer& indexBuffer)
+    void Renderer::DrawIndex(const IndexBuffer& indexBuffer) const
     {
         SDL_DrawGPUIndexedPrimitives(m_renderPass,
             indexBuffer.GetIndexCount(),
@@ -223,14 +228,14 @@ namespace nu
             0,
             0);
     }
-    void Renderer::SetVertexUniform(uint32_t slot, const void* data, uint32_t size)
+    void Renderer::SetVertexUniform(UniformSlot slot, const void* data, uint32_t size) const
     {
-        SDL_PushGPUVertexUniformData(m_commandBuffer, slot, data, size);
+        SDL_PushGPUVertexUniformData(m_commandBuffer, static_cast<uint32_t>(slot), data, size);
     }
 
-    void Renderer::SetFragmentUniform(uint32_t slot, const void* data, uint32_t size)
+    void Renderer::SetFragmentUniform(UniformSlot slot, const void* data, uint32_t size) const
     {
-        SDL_PushGPUFragmentUniformData(m_commandBuffer, slot, data, size);
+        SDL_PushGPUFragmentUniformData(m_commandBuffer, static_cast<uint32_t>(slot), data, size);
     }
 
     void Renderer::SetFragmentTexture(uint32_t slot, const Texture& texture)
@@ -241,6 +246,12 @@ namespace nu
         };
 
         SDL_BindGPUFragmentSamplers(m_renderPass, slot, &binding, 1);
+    }
+
+    void Renderer::SetMaterial(const MaterialInstance& materialInstance) const
+    {
+        SetPipeline(materialInstance.GetMaterial().GetPipeline());
+        materialInstance.Bind(m_commandBuffer, m_renderPass);
     }
 
     void Renderer::CreateDepthBuffer()

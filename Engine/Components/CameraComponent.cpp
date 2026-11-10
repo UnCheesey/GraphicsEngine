@@ -8,12 +8,18 @@ namespace nu
 {
 	FACTORY_REGISTER(CameraComponent)
 
+	void CameraComponent::Start()
+	{
+		m_aspectRation = Engine::Get().GetRenderer().GetWidth() / static_cast<float>(Engine::Get().GetRenderer().GetHeight());
+
+	}
+
 	void CameraComponent::Update(float dt)
 	{
-		m_view = glm::lookAtRH(m_owner->GetTransform().position, m_owner->GetTransform().position + glm::vec3{0.0f, 0.0f, -1.0f}, glm::vec3{0.0f , 1.0f , 0.0f});
-		float aspectRation = Engine::Get().GetRenderer().GetWidth() / static_cast<float>(Engine::Get().GetRenderer().GetHeight());
-		m_projection = glm::perspective(glm::radians(m_fov), aspectRation, m_nearPlane, m_farPlane);
+		glm::vec3 forward = m_owner->GetTransform().Forward();
 
+		m_view = glm::lookAtRH(m_owner->GetTransform().position, m_owner->GetTransform().position + forward, glm::vec3{0.0f , 1.0f , 0.0f});
+		m_projection = glm::perspective(glm::radians(m_fov), m_aspectRation, m_nearPlane, m_farPlane);
 	}
 	void CameraComponent::Draw(const Renderer& renderer)
 	{

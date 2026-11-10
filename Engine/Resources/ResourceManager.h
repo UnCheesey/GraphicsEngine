@@ -19,6 +19,8 @@ namespace nu {
 			requires std::derived_from<T, Resource>
 		res_t<T> GetWithID(const std::string& id, const std::string& name, Args&& ... args);
 
+		void Clear() { m_resources.clear(); }
+
 	private:
 		std::map<std::string, res_t<Resource>> m_resources;
 	};
@@ -52,7 +54,8 @@ namespace nu {
 
 		// load resource
 		res_t<T> resource = std::make_shared<T>();
-		if (resource->Load(name, std::forward<Args>(args)...) == false) {
+		if (resource->Load(name, std::forward<Args>(args)...) == false)
+		{
 			std::cerr << "Could not load resource: " << name << std::endl;
 			return res_t<T>();
 		}
