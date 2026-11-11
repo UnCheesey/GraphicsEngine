@@ -88,6 +88,8 @@ namespace nu
             return false;
         }
 
+        m_swapchainTexture = nullptr;
+
         SDL_GPUTexture* swapchainTexture = nullptr;
         if (!SDL_WaitAndAcquireGPUSwapchainTexture(m_commandBuffer, m_window, &swapchainTexture, nullptr, nullptr))
         {
@@ -121,10 +123,7 @@ namespace nu
     bool Renderer::EndFrame()
     {
 
-        if (m_renderPass) {
-            SDL_EndGPURenderPass(m_renderPass);
-            m_renderPass = nullptr;
-        }
+        EndRenderPass();
 
         if (!SDL_SubmitGPUCommandBuffer(m_commandBuffer))
         {
@@ -133,8 +132,17 @@ namespace nu
         }
 
         m_commandBuffer = nullptr;
+        m_swapchainTexture = nullptr;
 
         return true;
+    }
+
+    void Renderer::EndRenderPass()
+    {
+        if (m_renderPass) {
+            SDL_EndGPURenderPass(m_renderPass);
+            m_renderPass = nullptr;
+        }
     }
 
     void Renderer::DrawPoint(float x, float y) const {
