@@ -30,7 +30,7 @@ namespace nu
 		}
 
 		// texture paths in the model are relative to the model file
-		std::string directory = "";
+		std::string directory = fe::GetParentDirectory(filename) + "/";
 		LoadMaterials(scene, directory, renderer);
 		// the root node is scene->mRootNode
 		ProcessNode(scene->mRootNode, scene, renderer);
@@ -71,7 +71,7 @@ namespace nu
 		{
 			// todo: process the child node with ProcessNode(child, scene, renderer)
 			// the children are stored in node->mChildren, this is recursive so every node in the tree gets processed
-			ProcessNode(*node->mChildren, scene, renderer);
+			ProcessNode(node->mChildren[i], scene, renderer);
 		}
 	}
 

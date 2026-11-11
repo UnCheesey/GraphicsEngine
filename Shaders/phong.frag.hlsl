@@ -42,7 +42,7 @@ Output main(Input input)
     
     float4 albedo = u_texture.Sample(u_sampler, input.texcoord) * material.color;
     float3 diffuse = lights.ambient;
-    float3 specular;
+    float3 specular = 0;
     
     float3 V = normalize(frame.cameraPosition - input.worldPosition);
     for (uint i = 0; i < lights.count; i++)
@@ -50,7 +50,7 @@ Output main(Input input)
         calculateLighting(lights.lights[i], material, input.worldPosition, normalize(input.normal), V, diffuse, specular);
     }
     
-    output.color = float4(1, 1, 1, 1); // float4(albedo.rgb * diffuse + specular, albedo.a);
+    output.color = float4(albedo.rgb * diffuse + specular, albedo.a);
 
 	return output;
 }
