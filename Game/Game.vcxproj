@@ -184,6 +184,7 @@
   <ItemGroup>
     <None Include="..\Build\Assets\Materials\ogre.instance.json" />
     <None Include="..\Build\Assets\Materials\phong.material.json" />
+    <None Include="..\Build\Assets\Materials\redhood.instance.json" />
     <None Include="..\Build\Assets\Materials\squirrel.instance.json" />
     <None Include="..\Build\Assets\Scenes\scene.json" />
     <None Include="cpp.hint" />

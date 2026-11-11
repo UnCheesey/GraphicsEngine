@@ -71,6 +71,49 @@
           "materials": [ "materials/ogre.instance.json" ]
         }
       ]
+    },
+    {
+      "name": "RedHood",
+      "type": "Actor",
+      "tag": "RedHood",
+      "transform": {
+        "position": [ 2, 0, 0 ]
+      },
+      "components": [
+        {
+          "type": "ModelComponent",
+          "model": "models/redhood.obj",
+          "materials": [ "materials/redhood.instance.json" ]
+        }
+      ]
+    },
+    {
+      "name": "Helmet",
+      "type": "Actor",
+      "tag":  "Helmet",
+      "transform": {
+        "position": [ 4, 0, 0 ]
+      },
+      "components": [
+        {
+          "type": "ModelComponent",
+          "model": "models/flight-helmet/flighthelmet.gltf"
+        }
+      ]
+    },
+    {
+      "name": "Cubone",
+      "type": "Actor",
+      "tag":  "Cubone",
+      "transform": {
+        "position": [ -2, 0, 0 ]
+      },
+      "components": [
+        {
+          "type": "ModelComponent",
+          "model": "models/cubone.glb"
+        }
+      ]
     }
   ]
 }
