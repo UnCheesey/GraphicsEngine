@@ -11,22 +11,24 @@ namespace nu {
 		m_particleSystem.Initialize(5000);
         m_input.Initialize();
 		m_audio.Initialize();
+		m_editor->Initialize(m_renderer);
 
 		return true;
 	}
 
 	void Engine::Shutdown() {
-		m_renderer.Shutdown();
 		m_input.Shutdown();
 		m_audio.Shutdown();
 		m_particleSystem.Shutdown();
+		m_editor->Shutdown();
+		m_renderer.Shutdown();
 	}
 
 	void Engine::Update() {
 		m_time.Tick(); 
-
 		m_audio.Update();
 		m_input.Update();
+		m_editor->Update();
 		m_particleSystem.Update(m_time.GetDeltaTime());
 	}
 }

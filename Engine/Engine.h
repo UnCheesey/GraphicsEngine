@@ -19,6 +19,7 @@
 #include "Renderer/ParticleSystem.h"
 #include "Input/Input.h"
 #include "Audio/Audio.h"
+#include "Editor/Editor.h"
 #include "Renderer/Texture.h"
 #include "Renderer/Text.h"
 
@@ -41,6 +42,7 @@ namespace nu {
 		Input& GetInput() { return m_input; }
 		Audio& GetAudio() { return m_audio; }
 		Time& GetTime() { return m_time; }
+		Editor& GetEditor() { return *m_editor; }
 		ParticleSystem& GetParticleSystem() { return m_particleSystem;  }
 
 		Engine(const Engine&) = delete;
@@ -54,6 +56,7 @@ namespace nu {
 		Renderer m_renderer;
 		Audio m_audio;
 		Time m_time;
+		std::unique_ptr<Editor> m_editor;
 		ParticleSystem m_particleSystem;
 	};
 }
