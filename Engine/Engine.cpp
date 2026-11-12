@@ -28,6 +28,7 @@ namespace nu {
 		m_time.Tick(); 
 		m_audio.Update();
 		m_input.Update();
+		m_editor->Update();
 		m_particleSystem.Update(m_time.GetDeltaTime());
 	}
 }
