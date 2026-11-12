@@ -62,7 +62,7 @@
       "type": "Actor",
       "tag": "Ogre",
       "transform": {
-        "position": [ 0, 0, 0 ]
+        "position": [ 0, 0.5, 0 ]
       },
       "components": [
         {
@@ -106,7 +106,8 @@
       "type": "Actor",
       "tag":  "Cubone",
       "transform": {
-        "position": [ -2, 0, 0 ]
+        "position": [ -2, 0.5, 0 ],
+        "rotation": [0, 180, 0]
       },
       "components": [
         {

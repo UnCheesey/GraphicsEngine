@@ -34,11 +34,14 @@ namespace nu {
 
         void Read(const json::value_t& value)
         {
-            JSON_READ(value, position);
+            glm::vec3 euler = { 0, 0, 0 };
 
-            glm::vec3 euler;
-            JSON_READ_NAME(value, "rotation", euler);
+            JSON_READ(value, position);
             JSON_READ(value, scale);
+            JSON_READ_NAME(value, "rotation", euler);
+
+            SetRotation(euler);
         }
+
     };
 }
