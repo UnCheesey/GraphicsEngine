@@ -7,11 +7,13 @@
 
 struct Material
 {
-    float4 color;
+    float4 baseColor;
+    float3 specularColor;
+    float shininess;
+    float3 emissiveColor;
+    float padding;
     float2 tiling;
     float2 offset;
-    float shine;
-    float3 padding;
 };
 
 struct Light
@@ -88,7 +90,7 @@ float3 calculateSpecular(float3 radiance, float3 N, float3 L, float3 V, Material
         float3 H = normalize(V + L);
         float3 HdotN = saturate(dot(H, N));
         
-        specular = pow(HdotN, material.shine);
+        specular = pow(HdotN, material.shininess);
     }
     
     return specular;

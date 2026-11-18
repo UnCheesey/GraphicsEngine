@@ -19,6 +19,8 @@ namespace nu {
 			requires std::derived_from<T, Resource>
 		res_t<T> GetWithID(const std::string& id, const std::string& name, Args&& ... args);
 
+		const auto& GetAll() const { return m_resources; }
+
 		void Clear() { m_resources.clear(); }
 
 	private:
@@ -38,15 +40,15 @@ namespace nu {
 
 		// check if exists
 		if (iter != m_resources.end()) {
-			// get value in iterator
 			auto base = iter->second;
-			// cast to data type T
 			auto resource = std::dynamic_pointer_cast<T>(base);
-			// check if cast was successful
 			if (resource == nullptr) {
 				std::cerr << "Resource type mismatch: " << id << std::endl;
 				return res_t<T>();
 			}
+
+			resource->SetName(name);
+			m_resources[name] = resource;
 
 			// return resource
 			return resource;
@@ -61,10 +63,10 @@ namespace nu {
 		}
 
 		// add resource to resource manager
+		resource->SetName(id);
 		m_resources[id] = resource;
 
 		return resource;
-
 	}
 
 	inline ResourceManager& Resources() { return ResourceManager::Instance(); }

@@ -90,7 +90,7 @@
     {
       "name": "Helmet",
       "type": "Actor",
-      "tag":  "Helmet",
+      "tag": "Helmet",
       "transform": {
         "position": [ 4, 0, 0 ]
       },
@@ -104,15 +104,31 @@
     {
       "name": "Cubone",
       "type": "Actor",
-      "tag":  "Cubone",
+      "tag": "Cubone",
       "transform": {
         "position": [ -2, 0.5, 0 ],
-        "rotation": [0, 180, 0]
+        "rotation": [ 0, 180, 0 ]
       },
       "components": [
         {
           "type": "ModelComponent",
           "model": "models/cubone.glb"
+        }
+      ]
+    },
+    {
+      "name": "Cube",
+      "type": "Actor",
+      "tag": "Cube",
+      "transform": {
+        "position": [ 0, 0, 0 ],
+        "scale": [ 1, 1, 1 ]
+      },
+      "components": [
+        {
+          "type": "ModelComponent",
+          "model": "models/cube.obj",
+          "materials": [ "materials/lava.instance.json" ]
         }
       ]
     }

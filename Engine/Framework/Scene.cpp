@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Scene.h"
 #include "Actor.h"
+#include "Engine.h"
 #include "Core/Factory.h"
 #include "Renderer/Renderer.h"
 #include "Renderer/Light.h"
@@ -28,6 +29,46 @@ namespace nu {
 			m_actors.push_back(std::move(actor));
 		}
 		m_pendingActors.clear();
+	}
+
+	void Scene::Draw(const Renderer& renderer) {
+		FrameUniform frameUniform{};
+
+		auto camera = GetActorByName<Actor>("Camera");
+		if (camera) {
+			auto cameraComponent = camera->GetComponent<CameraComponent>();
+			if (cameraComponent) {
+				frameUniform.cameraPosition = camera->GetTransform().position;
+				frameUniform.view = cameraComponent->GetView();
+				frameUniform.projection = cameraComponent->GetProjection();
+				frameUniform.viewProjection = frameUniform.projection * frameUniform.view;
+
+				renderer.SetVertexUniform(UniformSlot::Frame, &frameUniform, sizeof(frameUniform));
+				renderer.SetFragmentUniform(UniformSlot::Frame, &frameUniform, sizeof(frameUniform));
+			}
+		}
+
+		LightUniform lightUniform{};
+		lightUniform.ambient = m_ambientLight;
+
+		auto lights = GetActorsByTag("Light");
+
+		for (auto light : lights)
+		{
+			if (!light->IsActive()) continue;
+
+			auto lightComponent = light->GetComponent<LightComponent>();
+			if (lightComponent && lightComponent->IsActive())
+			{
+				lightUniform.lights[lightUniform.count++] = lightComponent->GetLightData();
+			}
+		}
+		renderer.SetVertexUniform(UniformSlot::Light, &lightUniform, sizeof(lightUniform));
+		renderer.SetFragmentUniform(UniformSlot::Light, &lightUniform, sizeof(lightUniform));
+
+		for (auto& actor : m_actors) {
+			if (actor->IsActive()) actor->Draw(renderer);
+		}
 	}
 
 	void Scene::AddActor(std::unique_ptr<Actor> actor){
@@ -82,43 +123,16 @@ namespace nu {
 		else {
 			return false;
 		}
-	}	
+	}
 
-	void Scene::Draw(const Renderer& renderer) {
-		FrameUniform frameUniform{};
+	void Scene::UpdateGui()
+	{
+		glm::vec3 clearColor = Engine::Get().GetRenderer().GetClearColor();
 
-		auto camera = GetActorByName<Actor>("Camera");
-		if (camera) {
-			auto cameraComponent = camera->GetComponent<CameraComponent>();
-			if(cameraComponent){
-				frameUniform.cameraPosition = camera->GetTransform().position;
-				frameUniform.view = cameraComponent->GetView();
-				frameUniform.projection = cameraComponent->GetProjection();
-				frameUniform.viewProjection = frameUniform.projection * frameUniform.view;
+		ImGui::ColorEdit3("Clear Color", glm::value_ptr(clearColor));
+		Engine::Get().GetRenderer().SetClearColor(clearColor);
 
-				renderer.SetVertexUniform(UniformSlot::Frame, &frameUniform, sizeof(frameUniform));
-				renderer.SetFragmentUniform(UniformSlot::Frame, &frameUniform, sizeof(frameUniform));
-			}
-		}
 
-		LightUniform lightUniform{};
-		lightUniform.ambient = glm::vec3{ 0.2f };
-
-		auto lights = GetActorsByTag("Light");
-
-		for (auto light : lights)
-		{
-			auto lightComponent = light->GetComponent<LightComponent>();
-			if (lightComponent)
-			{
-				lightUniform.lights[lightUniform.count++] = lightComponent->GetLightData();
-			}
-		}
-		renderer.SetVertexUniform(UniformSlot::Light, &lightUniform, sizeof(lightUniform));
-		renderer.SetFragmentUniform(UniformSlot::Light, &lightUniform, sizeof(lightUniform));
-
-		for (auto& actor : m_actors) {
-			actor->Draw(renderer);
-		}
+		ImGui::ColorEdit3("Ambient Light", glm::value_ptr(m_ambientLight));
 	}
 }

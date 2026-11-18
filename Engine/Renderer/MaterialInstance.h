@@ -20,6 +20,8 @@ namespace nu
 		void SetTexture(size_t slot, res_t<Texture> texture);
 		bool SetTexture(const std::string& name, res_t<Texture> texture);
 
+		void UpdateGui() override;
+
 		MaterialData& GetData() { return m_data; }
 		const MaterialData& GetData() const { return m_data; }
 

@@ -51,12 +51,15 @@ namespace nu
 		void SetMaterial(const class MaterialInstance& materialInstance) const;
 
 		void CreateDepthBuffer();
+		void SetClearColor(const glm::vec3& clearColor) { m_clearColor = clearColor; }
+		glm::vec3 GetClearColor() { return m_clearColor; }
 
 		friend class Text;
 		friend class Texture;
 		friend class Shader;
 		friend class VertexBuffer;
 		friend class IndexBuffer;
+		friend class Material;
 
 	private:
 		SDL_Window* m_window = nullptr;
@@ -70,5 +73,7 @@ namespace nu
 
 		int m_width = 0;
 		int m_height = 0;
+
+		glm::vec3 m_clearColor{ 0 };
 	};
 }
