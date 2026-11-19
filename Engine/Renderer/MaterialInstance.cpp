@@ -124,5 +124,14 @@ namespace nu
 		ImGui::ColorEdit3("Emissive", glm::value_ptr(m_data.emissiveColor));
 		ImGui::DragFloat("Tiling", glm::value_ptr(m_data.tiling), 0.1f);
 		ImGui::DragFloat("Offset", glm::value_ptr(m_data.offset), 0.1f);
+
+		ImGui::TextColored({ 0.5f, 0.1f, 0.5f, 1 }, "Textures");
+		ImGui::Separator();
+
+		for (auto& texture : m_textures)
+		{
+			ImGui::Separator();
+			if (texture) texture->UpdateGui();
+		}
 	}
 }

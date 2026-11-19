@@ -28,7 +28,7 @@ struct Input
 struct Output
 {
     float4 position : SV_Position;
-    float2 texcood : TEXCOORD0;
+    float2 texcoord : TEXCOORD0;
     float3 diffuse : TEXCOORD1;
     float3 specular : TEXCOORD2;
 };
@@ -36,7 +36,7 @@ struct Output
 Output main(Input input)
 {
     Output output;
-    output.texcood = (input.texcoord * material.tiling ) + material.offset;
+    output.texcoord = (input.texcoord * material.tiling ) + material.offset;
     output.position = mul(mvp, float4(input.position, 1.0f));
     
     // WORLD POSITION

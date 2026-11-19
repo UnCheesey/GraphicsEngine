@@ -18,7 +18,6 @@ namespace nu
 			return false;
 		}
 
-		// make sure this is a material template, not an instance
 		std::string type;
 		JSON_READ(document, type);
 		if (type != "material")
@@ -38,6 +37,7 @@ namespace nu
 		JSON_READ_NAME(document, "textures", m_textureSlots);
 
 		m_defaultTexture = Resources().Get<Texture>("textures/default.png", renderer);
+
 		if (!m_defaultTexture)
 		{
 			std::cerr << "Could not load default texture for Material: " << filename << std::endl;
@@ -80,5 +80,23 @@ namespace nu
 	{
 		auto it = std::find(m_textureSlots.begin(), m_textureSlots.end(), name);
 		return (it != m_textureSlots.end()) ? (int)std::distance(m_textureSlots.begin(), it) : -1;
+	}
+
+	void Material::UpdateGui()
+	{
+
+		ImGui::TextColored({ 0.5f, 0.1f, 0.5f, 1 }, "Shaders");
+		ImGui::Separator();
+		ImGui::Text("Vertex Shader: %s", m_vertexShader->GetName().c_str());
+		ImGui::Text("Fragment Shader: %s", m_fragmentShader->GetName().c_str());
+
+		ImGui::TextColored({ 0.5f, 0.1f, 0.5f, 1 }, "Texture Slots");
+		ImGui::Separator();
+		for (size_t i = 0; i < m_textureSlots.size(); i++) 
+		{
+			ImGui::Text("Texture Slot [%d] - %s", i, m_textureSlots[i].c_str());
+
+		}
+
 	}
 }
