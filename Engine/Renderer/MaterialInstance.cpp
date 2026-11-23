@@ -122,6 +122,7 @@ namespace nu
 		ImGui::ColorEdit3("Specular", glm::value_ptr(m_data.specularColor));
 		ImGui::SliderFloat("Shininess", &m_data.shininess, 2, 256);
 		ImGui::ColorEdit3("Emissive", glm::value_ptr(m_data.emissiveColor));
+		ImGui::SliderFloat("Normal Strength", &m_data.normalStrength, 0, 10);
 		ImGui::DragFloat("Tiling", glm::value_ptr(m_data.tiling), 0.1f);
 		ImGui::DragFloat("Offset", glm::value_ptr(m_data.offset), 0.1f);
 
