@@ -247,8 +247,8 @@ namespace nu
     void Renderer::SetFragmentTexture(uint32_t slot, const Texture& texture)
     {
         SDL_GPUTextureSamplerBinding binding{
-            .texture = texture.m_gpuTexture,
-            .sampler = texture.m_gpuSampler
+            .texture = texture.GetGPUTexture(),
+            .sampler = texture.GetGPUSampler()
         };
 
         SDL_BindGPUFragmentSamplers(m_renderPass, slot, &binding, 1);

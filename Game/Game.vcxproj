@@ -188,10 +188,15 @@
     <None Include="..\Build\Assets\Materials\multi.material.json" />
     <None Include="..\Build\Assets\Materials\ogre-normal.instance.json" />
     <None Include="..\Build\Assets\Materials\ogre.instance.json" />
+    <None Include="..\Build\Assets\Materials\phong-default.material.json" />
     <None Include="..\Build\Assets\Materials\phong-normal.material.json" />
     <None Include="..\Build\Assets\Materials\phong.material.json" />
     <None Include="..\Build\Assets\Materials\redhood.instance.json" />
+    <None Include="..\Build\Assets\Materials\skybox.instance.json" />
+    <None Include="..\Build\Assets\Materials\skybox.material.json" />
     <None Include="..\Build\Assets\Materials\squirrel.instance.json" />
+    <None Include="..\Build\Assets\Scenes\scene-helmet.json" />
+    <None Include="..\Build\Assets\Scenes\scene-skybox.json" />
     <None Include="..\Build\Assets\Scenes\scene.json" />
     <None Include="cpp.hint" />
   </ItemGroup>

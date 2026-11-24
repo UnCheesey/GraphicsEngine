@@ -46,6 +46,21 @@
     <None Include="..\Build\Assets\Materials\ogre-normal.instance.json">
       <Filter>Assets\Materials</Filter>
     </None>
+    <None Include="..\Build\Assets\Scenes\scene-helmet.json">
+      <Filter>Assets\Scenes</Filter>
+    </None>
+    <None Include="..\Build\Assets\Materials\phong-default.material.json">
+      <Filter>Assets\Materials</Filter>
+    </None>
+    <None Include="..\Build\Assets\Materials\skybox.instance.json">
+      <Filter>Assets\Materials</Filter>
+    </None>
+    <None Include="..\Build\Assets\Materials\skybox.material.json">
+      <Filter>Assets\Materials</Filter>
+    </None>
+    <None Include="..\Build\Assets\Scenes\scene-skybox.json">
+      <Filter>Assets\Scenes</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp" />

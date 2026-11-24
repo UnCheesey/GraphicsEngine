@@ -1,23 +1,6 @@
 #include "Engine.h"
 #include "Core/File.h"
 
-#include "Math/Transform.h"
-
-#include "Renderer/Shader.h"
-#include "Renderer/VertexBuffer.h"
-#include "Renderer/IndexBuffer.h"
-#include "Renderer/Pipeline.h"
-
-#include "Components/CameraComponent.h"
-
-#include "Resources/ResourceManager.h"
-
-#define GLM_ENABLE_EXPERIMENTAL
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtx/euler_angles.hpp>
-#include <glm/gtx/transform.hpp>
-
 using namespace nu;
 
 int main() {
@@ -26,8 +9,9 @@ int main() {
 
     // INITIALIZATION
     Engine::Get().Initialize();
+
     Scene scene;
-    scene.Load("scenes/scene.json");
+    scene.Load("scenes/scene-skybox.json");
 
     auto& renderer = Engine::Get().GetRenderer();
    
